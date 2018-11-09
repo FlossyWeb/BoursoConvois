@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>BoursoConvois</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="assets/css/-Login-form-Page-BS4-.css">
+    <link rel="stylesheet" href="assets/css/Contact-Form-v2-Modal--Full-with-Google-Map.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="assets/css/Team-with-rotating-cards.css">
+    <link rel="stylesheet" href="assets/css/Pretty-Footer.css">
+    <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/Pretty-Header.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/leaflet.css" />
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+	<!--
+    <nav class="navbar navbar-light navbar-expand-md custom-header">
+        <div class="container-fluid">
+			<a class="navbar-brand" href="index.html" style="color:rgb(25,24,24);">
+				<img class="img-responsive" src="assets/img/logo.boursoconvois.header.png" style="max-width:196px;" alt="BoursoConvois">
+			</a>
+			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav links">
+                    <li class="nav-item" role="presentation"><a class="nav-link custom-navbar" href="index.html#home">Accueil</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html#transporteurs">Notre concept</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html#pricing">Offres</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="modal" href="index.html#modal_contact">Contact</a></li>
+                </ul>
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="dropdown">
+						<a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#noscroll" id="dropdownMenuMain">Mon Compte&nbsp; </a>
+                        <div class="dropdown-menu dropdown-menu-right keep-open" id="mainDropdown" aria-labelledby="dropdownMenuMain">
+							<div id="header-not-yet-connected" class="form-group">
+								<div class="input-group input-login">
+									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+									<input class="form-control" type="text" name="login" required="" placeholder="identifiant" id="login">
+								</div>
+								<div class="input-group input-login">
+									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
+									<input class="form-control" type="password" name="pass" required="" placeholder="Mot de passe" id="pass">
+								</div>
+								<div class="input-group input-login">
+									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+									<select class="form-control" name="businessType" id="businessType">
+										<option value="" selected>Type de compte</option>
+										<option value="0">Transporteur</option>
+										<option value="1">Société Pilote</option>
+									</select>
+								</div>
+								<div class="dropdown-divider"></div>
+								<button class="btn btn-default login" id="sender-header" type="button" onclick="App.logMeIn('#header-not-yet-connected')">Connexion</button>
+							</div>
+							<div id="header-connected-transporteurs" style="display:none;">
+								<a class="dropdown-item" role="presentation" href="bourse.html"> Bourse aux convois </a>
+								<a class="dropdown-item" role="presentation" href="bourse.html#account"> Mes Informations </a>
+								<a class="dropdown-item" role="presentation" onclick="App.logMeOut()" href="#noscroll"> Déconnexion </a>
+							</div>
+							<div id="header-connected-pilotes" style="display:none;">
+								<a class="dropdown-item" role="presentation" href="bourse.html"> Bourse aux convois </a>
+								<a class="dropdown-item" role="presentation" id="goToDriversPlace" href="bourse.html#drivers"> Espace Pilotes </a>
+								<a class="dropdown-item" role="presentation" href="bourse.html#account"> Mes Informations </a>
+								<a class="dropdown-item" role="presentation" href="manager.html"> Interface manager </a>
+								<a class="dropdown-item" role="presentation" onclick="App.logMeOut()" href="#noscroll"> Déconnexion </a>
+							</div>
+							<div id="header-connected-stores" style="display:none;">
+								<a class="dropdown-item" role="presentation" href="stores.html"> Téléchargements </a>
+								<a class="dropdown-item" role="presentation" onclick="App.logMeOut()" href="#noscroll"> Déconnexion </a>
+							</div>
+						</div>
+                    </li>
+                </ul>
+			</div>
+        </div>
+    </nav>
+	-->
+    <div id="loginPage" class="container-fluid">
+        <div class="row mh-100vh">
+            <div class="col-10 col-sm-8 col-md-6 col-lg-6 offset-1 offset-sm-2 offset-md-3 offset-lg-0 align-self-center d-lg-flex align-items-lg-center align-self-lg-stretch bg-white p-5 rounded rounded-lg-0 my-5 my-lg-0" id="login-block">
+                <div class="m-auto w-lg-75 w-xl-50" style="text-align:center;">
+					<img class="img-responsive" src="assets/img/logo.boursoconvois.680.png" width="100%" style="max-width:680px;" alt="BoursoConvois">
+                    <!-- <h3 class="text-warning font-weight-light mb-5">Ensemble modernisons l'escorte</h3> -->
+					<p class="text-warning"><b>Ensemble modernisons l'escorte</b></p>
+                    <form action="javascript:App.logMeIn('#loginApp');" method="get" id="loginApp">
+                        <div class="form-group">
+							<!-- <label class="text-secondary">Identifiant</label> -->
+							<input class="form-control" placeholder="Identifiant" id="login" type="tel" required="" pattern="[0-9-+s()]+[0-9-+s()\s]+">
+						</div>
+                        <div class="form-group">
+							<!-- <label class="text-secondary">Mot de passe</label> -->
+							<input class="form-control" placeholder="Mot de passe" id="pass" type="password" required="">
+						</div>
+						<button class="btn btn-warning btn-block mt-2" id="sender" type="submit"><i class="fa fa-unlock-alt"></i>&nbsp;Connexion</button>
+					</form>
+                    <p class="mt-3 mb-0"><a href="#" class="text-warning small">Mot de passe oublié</a></p>
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-end" id="bg-block" style="background-image:url('assets/img/trucks_bg2.jpg');background-size:cover;background-position:center center;">
+				&nbsp;
+            </div>
+        </div>
+    </div>
+    <div id="homePage" class="container-fluid">
+		<h1>Yeah yeah !!!</h1>
+    </div>
+	<div class="modal fade" role="dialog" tabindex="-1" id="modal_contact" style="z-index: 100000;">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="fa fa-at"></i> Formulaire de Contact</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				</div>
+				<div class="modal-body">
+					<form action="javascript:App.subContact('#contactFormPop');" method="get" id="contactFormPop">
+						<!--
+						<div class="form-row">
+							<div class="col-md-6">
+								<div id="successfail"></div>
+							</div>
+						</div>
+						-->
+						<div class="form-row">
+							<div class="col-12 col-md-6" id="message">
+								<h2 class="h4"><i class="fa fa-envelope"></i> Contactez-Nous<small><small class="required-input">&nbsp;(*obligatoires)</small></small>
+								</h2>
+								<div class="form-group"><label for="from_name">Nom Prénom</label><span class="required-input">*</span>
+									<div class="input-group">
+										<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user-o"></i></span></div>
+										<input class="form-control" type="text" name="from_name" required="" placeholder="Nom Prénom" id="from_name">
+									</div>
+								</div>
+								<div class="form-group"><label for="from_email">Email</label><span class="required-input">*</span>
+									<div class="input-group">
+										<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-envelope-o"></i></span></div><input class="form-control" type="email" name="from_email" required="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}$" placeholder="Adresse Email" id="from_email"></div>
+								</div>
+								<div class="form-row">
+									<div class="col-12 col-sm-12 col-md-12 col-lg-6">
+										<div class="form-group"><label for="from_phone">Téléphone</label><span class="required-input">*</span>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i></span></div><input class="form-control" type="tel" required="" pattern="[0-9-+s()]+[0-9-+s()\s]+" name="from_phone" placeholder="Mobile ou fixe" id="from_phone"></div>
+										</div>
+									</div>
+									<div class="col-12 col-sm-12 col-md-12 col-lg-6">
+										<div class="form-group"><label for="calltime">Rappel ?</label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div><select class="form-control" name="calltime" id="calltime"><optgroup label="De préférence le"><option value="Matin" selected="">Matin</option><option value="Aprés-Midi">Aprés-Midi</option><option value="Soirée">Soirée</option></optgroup></select></div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group"><label for="comments">Commentaires</label><textarea class="form-control" rows="5" name="comments" placeholder="Votre message ici..." id="comments"></textarea></div>
+								<div class="form-group">
+									<div class="form-row">
+										<!-- <div class="col"><button class="btn btn-primary btn-block" type="reset"><i class="fa fa-undo"></i> Annuler</button></div> -->
+										<div class="col"><button class="btn btn-primary btn-block" id="sender"onclick="App.addWasValidatedClass('#contactFormPop')" type="submit">Envoyer <i class="fa fa-chevron-circle-right"></i></button></div>
+									</div>
+								</div>
+								<div id="successfail"></div>
+								<hr class="d-flex d-md-none">
+							</div>
+							<div class="col-12 col-md-6">
+								<h2 class="h4"><i class="fa fa-location-arrow"></i> Où sommes-nous</h2>
+								<div class="form-row">
+									<div class="col-12">
+										<div class="static-map">
+											<a href="https://www.google.com/maps/place/452+Avenue+du+Prado,+13008+Marseille" target="_blank">
+												<!-- <img class="img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?autoscale=2&size=600x210&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid|color:0xff0000|label:|452+Avenue+du+Prado,+13008+Marseille&zoom=12&key=YOUR_API_KEY" alt="Google Map"> -->
+												<img class="img-responsive" src="assets/img/staticmap.png" alt="Google Map">
+											</a>
+										</div>
+									</div>
+									<div class="col-sm-6 col-md-12 col-lg-6">
+										<h2 class="h4"><i class="fa fa-user"></i> Infos Contact</h2>
+										<div><span><strong>Service Client</strong></span></div>
+										<div><span>contact@boursoconvois.com</span></div>
+										<div><span>www.boursoconvois.com</span></div>
+										<hr class="d-sm-none d-md-block d-lg-none">
+									</div>
+									<div class="col-sm-6 col-md-12 col-lg-6">
+										<h2 class="h4"><i class="fa fa-location-arrow"></i> Notre Adresse</h2>
+										<div><span><strong>BoursoConvois (SAS)</strong></span></div>
+										<div><span>452 Avenue du Prado</span></div>
+										<div><span>13008, Marseille.</span></div>
+										<div><abbr data-toggle="tooltip" data-placement="top" title="Numéro azur: 0 810 811 600">Tel:</abbr><a href="tel:0810811600"> 0 810 811 600</a></div>
+										<hr class="d-sm-none">
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
+	<div class="clearfix"></div>
+	<a href="#" class="go-up-fixed" title="Aller en haut"><i class="fa fa-arrow-up"></i></a>
+	<footer>
+		<div class="row" id="footer-div">
+			<div class="col-sm-6 col-md-4 footer-navigation">
+				<img class="img-responsive footer-logo" src="assets/img/logo.boursoconvois.footer.png" width="50%" style="max-width:680px;" alt="BoursoConvois">
+				<hr>
+				<p class="links"><a href="index.html#home">Accueil</a><strong> · </strong><a href="index.html#demo">Demo</a><strong> · </strong><a href="index.html#transporteurs">Notre concept</a><strong> · </strong><a href="index.html#pricing">Avantages de l’offre</a><strong>· </strong><a href="index.html#contact">Contact</a></p>
+				<p class="company-name">SAS BoursoConvois © <span id="now-date"></span> </p>
+			</div>
+			<div class="col-sm-6 col-md-4 footer-contacts">
+				<div>
+					<a href="https://www.google.com/maps/place/452+Avenue+du+Prado,+13008+Marseille" target="_blank">
+						<span class="fa fa-map-marker footer-contacts-icon"> </span>
+						<p><span class="new-line-span">452 Avenue du Prado</span> 13008, Marseille</p>
+					</a>
+				</div>
+				<div>
+					<a href="tel:0810811600">
+						<i class="fa fa-phone footer-contacts-icon"></i>
+						<p class="footer-center-info email text-left"> 0 810 811 600</p>
+					</a>
+				</div>
+				<div>
+					<a href="mailto:contact@boursoconvois.com" target="_blank">
+						<i class="fa fa-envelope footer-contacts-icon"></i>
+						<p> contact@boursoconvois.com</p>
+					</a>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="col-md-4 footer-about">
+				<h4>Qui sommes-nous ?</h4>
+				<p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer. </p>
+				<div class="social-links social-icons">
+					<a href="#footer-div"><i class="fa fa-facebook"></i></a>
+					<a href="#footer-div"><i class="fa fa-twitter"></i></a>
+					<a href="#"><i class="fa fa-arrow-up"></i></a>
+				</div>
+			</div>
+		</div>
+	</footer>
+	-->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/Contact-Form-v2-Modal--Full-with-Google-Map.js"></script>
+    <script src="assets/js/smooth.scroll.anchor.js"></script>
+    <script src="assets/js/jquery.html5storage.min.js"></script>
+    <!-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyCvL4a4-LKLUXJrTwpJ4_UnkmtZSGgrVWg&libraries=places" type="text/javascript"></script> -->
+    <script src="assets/js/leaflet.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

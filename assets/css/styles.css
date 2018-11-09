@@ -1,0 +1,306 @@
+html, body, #map { width: 100%; height: 100%;}
+body { margin: 0; padding: 0;}
+.manager { overflow-y:hidden;}
+img {
+	display: inline-block;
+	max-width: 100%;
+	height: auto;
+}
+button {
+	cursor: pointer;
+}
+footer, section {
+	box-shadow: 0 0 16px rgba(0,0,0,0.6);
+}
+.rounded {
+	-moz-border-radius: 6px;
+	border-radius: 6px;	
+}
+.rounded16 {
+	-moz-border-radius: 16px;
+	border-radius: 16px;
+}
+.shadow {
+	box-shadow: 0 0 6px #000;
+	-moz-box-shadow: 0 0 6px #000;
+	-webkit-box-shadow: 0 0 6px #000;
+}
+.cursor {
+	cursor: pointer;
+}
+.center-all {
+	text-align:center;
+	position: absolute;
+	top: 50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+}
+.navbar {
+  z-index: 9999;
+  position: fixed;
+  width: 100%;
+  opacity: 0.9;
+}
+.custom-header {
+	background-image: linear-gradient(to right, #F9B233, #088142);
+	padding: 16px 16px;
+	box-sizing: border-box;
+	border: 0;
+	border-radius: 0;
+}
+.navbar-brand {
+    border-right: 1px solid rgba(0,0,0,0.2);
+	padding:  0.75rem 0rem calc(54px - 0.75rem - 30px);
+	/* padding: 0.75rem 1rem calc(54px - 0.75rem - 30px); */
+}
+@media (min-width:768px) {
+	.navbar-brand {
+		padding: 0.75rem 1rem calc(54px - 0.75rem - 30px);
+	}
+}
+
+.custom-header a.navbar-brand {
+	line-height: 0.5;
+	margin-right: 1%;
+}
+.custom-header ul.nav.navbar-nav.links li a {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.custom-header li.dropdown .dropdown-toggle {
+	border-radius: 2px;
+	color: #F9B233;
+	padding: 8px 14px;
+	background: #5a4c4c;
+	opacity: 0.9;
+	border: solid 1px #333;
+	margin: 0;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+button.btn.btn-default.login {
+  font:bold 14px Arial, Helvetica, sans-serif;
+  margin-top:5px;
+  margin-bottom:5px;
+  margin-left:10px;
+  margin-right:10px;
+  padding:5px;
+  width:90%;
+  border-radius:2px;
+  height:2em;
+  background:#088142;
+  color: #FFF;
+  border: 1px solid #FFF;
+}
+button.btn.btn-default.login:hover {
+  background:#F9B233;
+  color: #FFF;
+  border: 1px solid #FFF;
+}
+.navbar .form-group {
+  margin-bottom:15px;
+  width:300px;
+}
+.input-login {
+  margin-top:5px;
+  margin-bottom:5px;
+  margin-left:10px;
+  margin-right:10px;
+  width:90%;
+}
+#dot-nav li.active {
+  background-color:#088142;
+}
+#dot-nav li:hover {
+  background-color:#F9B233;
+}
+#all-the-frame {
+	padding-top: 6px;
+}
+.btn.btn-primary {
+    background-color: #088142 !important;
+    border-color: #088142 !important;
+}
+/* Blue ones */
+/*
+.btn.btn-primary {
+	background-color: #048f83 !important;
+	border-color: #048f83 !important;
+}
+*/
+.modal .modal-header h4, .modal .modal-header .close{
+	color: #FFF;
+}
+.required-input {
+	color: red;
+}
+@media (max-width:768px) {
+	#dot-nav {
+		display:none;
+	}
+	.carousel-item .carousel-hero img, .hero-technology img {
+		width: 90%;
+		margin-bottom: 6px;
+	}
+	.carousel-item .carousel-hero .btn, .hero-technology .btn {
+		width: 96%;
+		margin-bottom: 2px;
+	}
+	#subFormLeads .btn-block, section#leads .card {
+		margin-bottom: 2px;
+	}
+}
+
+section, .pricing-table, .card-section-imagia {
+	padding-top: 90px;
+}
+.pricing-table .lead, .pricing-table h2 {
+	color: #FFF;
+	text-shadow:1px 1px 1px rgba(0,0,0,1);
+}
+#transporteurs .card-imagia .cover-imagia.cover-gradient {
+  background: #ffffff;
+  background-image: radial-gradient(circle at 50% 100% , #F9B233 0%, #088142 100%);
+}
+#pilotes .card-imagia .cover-imagia.cover-gradient {
+  background: #ffffff;
+  background-image: radial-gradient(circle at 50% 100% , #088142 0%, #F9B233 100%);
+}
+.card-imagia .user-imagia img {
+    border: 0px;
+}
+section#pricing {
+	background: url(../img/background-pricing.jpg) no-repeat center;
+	background-size: cover;
+}
+section#contact {
+	background: url(../img/background-contact.jpg) no-repeat center;
+	background-size: cover;
+}
+section#leads h1, section#leads h2, section#leads h3, section#leads h4, section#leads h5, section#leads h6, section#leads .card p , section#leads .card ul, #answerLeadsCont .card h1, #answerLeadsCont .card h2, #answerLeadsCont .card h3, #answerLeadsCont .card h4, #answerLeadsCont .card h5, #answerLeadsCont .card h6 {
+	color: #FFF;
+	text-align: center;
+}
+.card {
+	margin-top: 6px;
+}
+#answerLeadsCont .card p, #answerLeadsCont .card ul {
+	color: #FFF;
+	text-align: left;
+}
+#answerLeadsCont .card {
+	margin-top: 2px;
+}
+section#leads hr {
+	box-shadow: 0 0 2px 1px #088142;
+}
+#leadsCont .leadinfo .alert {
+	padding: 0.1rem;
+	font-size:x-small;
+	margin-bottom: 0.1rem;
+}
+section#drivers h1 {
+	color: #FFF;
+}
+.accordion, .accordion h2, .accordion h4 {
+	color: #DEDEDE;
+}
+.accordion .btn, .modal .btn-block {
+	width: 100%;
+	font-weight: bold;
+}
+.site-footer {
+  padding:20px 0;
+  text-align:center;
+}
+
+.site-footer h5 {
+  color:inherit;
+  font-size:20px;
+}
+
+a.go-up-fixed {
+	display: none;
+	position: fixed;
+	bottom: 6px;
+	right: 6px;
+	width:32px;
+	border:none;
+	font-size:20px;
+	border-radius:50%;
+	margin:4px;
+	color:#fff;
+	text-align:center;
+	background-color:#088142;
+	height:32px;
+	opacity:0.8;
+	line-height:32px;
+}
+a.add-lead-fixed {
+	display: block;
+	position: fixed;
+	bottom: 42px;
+	right: 6px;
+	width:32px;
+	border:none;
+	font-size:20px;
+	border-radius:50%;
+	margin:4px;
+	color:#fff;
+	text-align:center;
+	background-color:#F9B233;
+	height:32px;
+	opacity:0.8;
+	line-height:32px;
+}
+.was-validated input:invalid, .was-validated select:invalid, .was-validated textarea:invalid {
+	border: 1px solid red;
+	box-shadow: 0 0 2px 1px red;
+}
+.was-validated input:valid, .was-validated select:valid, .was-validated textarea:valid {
+	border: 1px solid green;
+	box-shadow: 0 0 2px 1px green;
+}
+
+.site-footer .social-icons a:hover, a.go-up-fixed {
+	opacity:1;
+}
+
+.site-footer .social-icons a {
+	display:inline-block;
+	width:32px;
+	border:none;
+	font-size:20px;
+	border-radius:50%;
+	margin:4px;
+	color:#fff;
+	text-align:center;
+	background-color:#798FA5;
+	height:32px;
+	opacity:0.8;
+	line-height:32px;
+}
+
+@media (min-width:768px) {
+	.site-footer .social-icons {
+		text-align:right;
+	}
+	footer {
+		margin-top: 0px;
+	}
+	.site-footer h5 {
+		text-align:left;
+	}
+}
+
+button.clearBtn {
+	position: absolute;
+	top: 36px;
+	right: 6px;
+	z-index: 1000;
+	font-weight: bold;
+	font-size: 16px;
+	border: 2px solid #FFBF00;
+	-moz-border-radius: 16px;
+	border-radius: 16px;
+}

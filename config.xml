@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+		xmlns:gap = "http://phonegap.com/ns/1.0"
+		xmlns:android = "http://schemas.android.com/apk/res/android"
+		id = "com.boursoconvois.app"
+		version = "0.0.1"
+		android-versionCode="1">
+    
+    <author href="http://flossyweb.com" email="contact@flossyweb.com">
+        FRANCOIS-REGIS SIMON
+    </author>
+
+	<name>BoursoConvois</name>
+
+	<description>
+	   Application de suivi de réalisation de convois exceptionnels.
+	</description>
+
+	<content src="index.html" />
+    <preference name="phonegap-version" value="cli-8.0.0" />
+	<!-- Using old pgb builder --> 
+	<!-- <preference name='pgb-builder-version' value='1' /> -->
+    <preference name="orientation"      value="default" />
+    <preference name="target-device"    value="universal" />
+    <preference name="fullscreen"       value="false" />
+	<preference name="prerendered-icon" value="false" />
+	<preference name="show-splash-screen-spinner" value="false" />
+	<preference name="detect-data-types" value="false" />
+	<!-- 
+	<preference name="android-build-tool" value="gradle" />
+	<preference name="android-minSdkVersion" value="16" />
+	<preference name="android-targetSdkVersion" value="16" />
+	-->
+    <plugin name="cordova-plugin-device" source="npm" />
+	<plugin name="cordova-plugin-contacts" source="npm" />
+	<plugin name="cordova-plugin-file" source="npm" />
+	<!-- <plugin name="cordova-plugin-media" source="npm" /> -->
+	<plugin spec="https://github.com/apache/cordova-plugin-media" />
+	<plugin name="cordova-plugin-network-information" source="npm" />
+	<plugin name="cordova-plugin-dialogs" source="npm" />
+	<plugin name="cordova-plugin-splashscreen" source="npm" />
+	<plugin name="cordova-plugin-vibration" source="npm" />
+	<plugin name="cordova-plugin-inappbrowser" source="npm" />
+	<plugin name="cordova-plugin-camera" source="npm" >
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="CELA VOUS PERMETTRA DE SCANNER DES QR CODES." />  
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To attach a photo to your items/check-outs/reservations, we need access to your Photo Library." />
+	</plugin>
+	<plugin name="cordova-plugin-geolocation" source="npm" version="2.4.3">
+		<variable name="GEOLOCATION_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TAXIS DE CONNAITRE VOTRE POSITION." />  
+    </plugin>
+	<plugin name="cordova-plugin-statusbar" source="npm" />
+	<plugin name="cordova-plugin-whitelist" source="npm" />
+	<plugin name="cordova-open" source="npm" spec="1.0.12" />
+	<plugin name="cordova-plugin-powermanagement" source="npm" />
+	<plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.3" source="npm">
+		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEUR DE SUIVRE LA POSITION DE LEURS CONVOIS." />
+	</plugin>
+	<!-- 
+	<plugin name="cordova-plugin-background-mode" source="npm" spec="0.7.2" />
+	<plugin name="cordova-plugin-background-task" source="npm" />
+	<plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.2.5" source="npm">
+    <plugin name="cordova-android-support-gradle-release" spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />  
+	<plugin name="cordova-plugin-x-socialsharing" source="npm" />
+	<plugin name="cordova-sms-plugin" source="npm" spec="0.1.11" />
+	<plugin name="com-badrit-contactpicker" source="npm" />
+	<plugin name="phonegap-plugin-barcodescanner" source="npm" />
+	<plugin name="de.appplant.cordova.plugin.local-notification" spec="0.8.4" source="npm" />
+	<plugin name="de.appplant.cordova.plugin.local-notification-ios9-fix" spec="0.8.2" />
+	<plugin name="cordova-plugin-local-notifications-mm" source="npm" />
+	-->
+    <plugin name="cordova-plugin-local-notifications" spec="https://github.com/notclive/cordova-plugin-local-notifications" source="git" />  
+	<plugin name="cordova-plugin-calendar" source="npm" />
+	<plugin name="cordova-plugin-customurlscheme" source="npm">
+		<param name="URL_SCHEME" value="boursoconvois" />
+	</plugin>
+
+    <icon src="icon.png" />
+	<splash src="splash.png" />
+	
+    <platform name="ios">
+		<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+			<string>CELA PERMETTRA AUX TAXIS DE CONNAITRE VOTRE POSITION.</string>
+		</edit-config>
+		<edit-config target="NSCalendarsUsageDescription" file="*-Info.plist" mode="merge">
+			<string>CELA VOUS PERMETTRA DE CREER DANS VOTRE CALENDRIER UN RENDEZ-VOUS AVEC LE TAXI.</string>
+		</edit-config>
+		<!-- 
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">    
+            <string>CELA VOUS PERMETTRA DE SCANNER DES QR CODES.</string>    
+        </edit-config>
+        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">  
+            <string>To attach a photo to your items/check-outs/reservations, we need access to your Photo Library.</string>    
+        </edit-config>
+		-->
+		
+        <icon src="res/icon/ios/icon-1024.png" width="1024" height="1024"/>
+        <icon src="res/icon/ios/icon-small.png" width="29" height="29"/>
+        <icon src="res/icon/ios/icon-small@2x.png" width="58" height="58"/>
+        <icon src="res/icon/ios/icon-small@3x.png" width="87" height="87"/>
+        <icon src="res/icon/ios/icon-small-40.png" width="40" height="40"/>
+        <icon src="res/icon/ios/icon-small-40@2x.png" width="80" height="80"/>
+        <icon src="res/icon/ios/icon-small-40@3x.png" width="120" height="120"/>
+        <icon src="res/icon/ios/icon-small-50.png" width="50" height="50"/>
+        <icon src="res/icon/ios/icon-small-50@2x.png" width="100" height="100"/>
+        <icon src="res/icon/ios/icon.png" width="57" height="57"/>
+        <icon src="res/icon/ios/icon@2x.png" width="114" height="114"/>
+        <icon src="res/icon/ios/icon-60.png" width="60" height="60"/>
+        <icon src="res/icon/ios/icon-60@2x.png" width="120" height="120"/>
+        <icon src="res/icon/ios/icon-60@3x.png" width="180" height="180"/>
+        <icon src="res/icon/ios/icon-72.png" width="72" height="72"/>
+        <icon src="res/icon/ios/icon-72@2x.png" width="144" height="144"/>
+        <icon src="res/icon/ios/icon-76.png" width="76" height="76"/>
+        <icon src="res/icon/ios/icon-76@2x.png" width="152" height="152"/>
+        <icon src="res/icon/ios/icon-167.png" width="167" height="167"/>
+        <icon src="res/icon/ios/icon-83.5@2x.png" width="167" height="167"/>
+
+        <!-- Storyboard portrait -->
+        <splash src="res/screen/ios/Default@2x~iphone~anyany.png"/>
+        <splash src="res/screen/ios/Default@2x~iphone~comany.png"/>
+        <splash src="res/screen/ios/Default@3x~iphone~anyany.png"/>
+        <splash src="res/screen/ios/Default@3x~iphone~comany.png"/>
+        <splash src="res/screen/ios/Default@2x~ipad~anyany.png"/>
+        <splash src="res/screen/ios/Default@2x~ipad~comany.png"/>
+
+        <!-- Storyboard landscape -->
+        <!--
+        <splash src="res/screen/ios/Default@2x~iphone~comcom.png"/>
+        <splash src="res/screen/ios/Default@3x~iphone~anycom.png"/>
+        -->
+
+        <!-- Legacy portrait -->
+        <splash src="res/screen/ios/Default~iphone.png" width="320" height="480"/>
+        <splash src="res/screen/ios/Default@2x~iphone.png" width="640" height="960"/>
+        <splash src="res/screen/ios/Default-Portrait~ipad.png" width="768" height="1024"/>
+        <splash src="res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
+        <splash src="res/screen/ios/Default-568h@2x~iphone.png" width="640" height="1136"/>
+        <splash src="res/screen/ios/Default-667h.png" width="750" height="1334"/>
+        <splash src="res/screen/ios/Default-736h.png" width="1242" height="2208"/>
+
+        <!-- Legacy landscape -->
+        <!--
+        <splash src="res/screen/ios/Default-Landscape~ipad.png" width="1024" height="768"/>
+        <splash src="res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
+        -->
+    </platform>
+
+    <platform name="android">
+		<preference name="android-build-tool" value="gradle" />
+		<preference name="android-minSdkVersion" value="16" />
+		<preference name="android-targetSdkVersion" value="16" />
+        <preference name="SplashMaintainAspectRatio" value="true"/>
+        <preference name="SplashShowOnlyFirstTime" value="true"/>
+		<!--
+		<config-file platform="android" parent="/manifest" mode="delete">
+			<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+			<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+		</config-file>
+		-->
+		<edit-config file="AndroidManifest.xml" target="/manifest/uses-permission[@android:name='android.permission.RECORD_AUDIO']" mode="merge">
+			   <uses-permission android:name="android.permission.INTERNET" />
+		</edit-config>
+		<edit-config file="AndroidManifest.xml" target="/manifest/uses-permission[@android:name='android.permission.READ_PHONE_STATE']" mode="merge">
+			<uses-permission android:name="android.permission.INTERNET" />
+		</edit-config>
+
+        <icon density="ldpi" src="res/icon/android/ldpi.png"/>
+        <icon density="mdpi" src="res/icon/android/mdpi.png"/>
+        <icon density="hdpi" src="res/icon/android/hdpi.png"/>
+        <icon density="xhdpi" src="res/icon/android/xhdpi.png"/>
+        <icon density="xxhdpi" src="res/icon/android/xxhdpi.png"/>
+        <icon density="xxxhdpi" src="res/icon/android/xxxhdpi.png"/>
+
+        <!-- Portrait -->
+        <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png"/>
+        <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png"/>
+        <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png"/>
+        <splash density="port-xhdpi" src="res/screen/android/splash-port-xhdpi.png"/>
+        <splash density="port-xxhdpi" src="res/screen/android/splash-port-xxhdpi.png"/>
+        <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png"/>
+
+        <!-- Landscape -->
+        <!--
+        <splash density="land-ldpi" src="res/screen/android/splash-land-ldpi.png"/>
+        <splash density="land-mdpi" src="res/screen/android/splash-land-mdpi.png"/>
+        <splash density="land-hdpi" src="res/screen/android/splash-land-hdpi.png"/>
+        <splash density="land-xhdpi" src="res/screen/android/splash-land-xhdpi.png"/>
+        <splash density="land-xxhdpi" src="res/screen/android/splash-land-xxhdpi.png"/>
+        <splash density="land-xxxhdpi" src="res/screen/android/splash-land-xxxhdpi.png"/>
+        -->
+    </platform>
+
+	<allow-navigation href="*" />
+	<access origin="*" />
+	
+</widget>
