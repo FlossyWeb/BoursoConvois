@@ -1,4 +1,4 @@
-var globals, map, locationSelect, markers_id = [], markers, isMobile=false,
+var globals, map, isMobile=false, app, lat, lng, previousLat, previousLng
 App = {
 
 	settings: {
@@ -6,6 +6,7 @@ App = {
 		defLatLng: [48.86, 2.33],
 		defZoom: 6,
 		bottomScrolled: false,
+		lead: '',
 		serverAddress: "https://www.boursoconvois.com/db/in_app_calls.php",
 		loginAddress: "https://www.boursoconvois.com/db/in_station_calls.php",
 		year: (new Date).getFullYear(),
@@ -56,7 +57,192 @@ App = {
 		// kick things off
 		globals = this.settings;
 		this.bindUIActions();
-		$("#now-date").append(globals.year);
+		//$("#now-date").append(globals.year);
+		// Checks App or Browser
+		app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
+		if ( app ) {
+			// PhoneGap application
+			// Attendre que PhoneGap soit prêt	    //
+			document.addEventListener("deviceready", App.onDeviceReady, false);
+		}
+	},
+
+	onDeviceReady: function() {
+		// PhoneGap est prêt
+		//document.addEventListener("backbutton", App.onBackKeyDown, false);
+		//document.addEventListener("resume", App.onResume, false);
+		//document.addEventListener("menubutton", App.onMenuKeyDown, false);
+		//document.addEventListener("pause", App.onPause, false);
+		StatusBar.overlaysWebView(false);
+		StatusBar.backgroundColorByHexString("#E7B242");
+		// prevent device from sleeping
+		window.powermanagement.acquire();
+		//if($.localStorage.getItem('registeredUser') != 1)
+		if((navigator.network.connection.type == Connection.NONE) || !window.jQuery){
+			//$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
+			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'Mon Appli Taxi', 'OK');
+		}
+		//openPdf = cordova.plugins.disusered.open;
+		/*
+		// For Android => Enable background mode
+		cordova.plugins.backgroundMode.enable();
+		cordova.plugins.backgroundMode.setDefaults({
+			title:  'App toujours en fonction (3 MINUTES MAX)',
+			ticker: 'App toujours en fonction (3 MINUTES MAX)',
+			text:   'Nous vous informons des courses en cours...'
+		});
+		//cordova.plugins.backgroundMode.configure({
+		//	title:'App toujours en fonction (3 MINUTES MAX), nous vous informons des courses en cours...'
+		//});
+		*/
+		// For iOS => backgroundtask
+		//backgroundtask.start(bgFunctionToRun);
+		// Efficient and batterie saving geolocation...
+		BackgroundGeolocation.on('location', function(location) {
+			// handle your locations here
+			// to perform long running operation on iOS
+			// you need to create background task
+			BackgroundGeolocation.startTask(function(taskKey) {
+				// execute long running task
+				// eg. ajax post location
+				lat = location.latitude;
+				lng = location.longitude;
+				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
+					if(data.ok=="ok") {
+						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
+					}
+					else
+						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
+					$("#returns").empty().append();
+				});
+				// IMPORTANT: task has to be ended by endTask
+				BackgroundGeolocation.endTask(taskKey);
+			});
+		});
+		/*
+		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
+			// handle stationary locations here
+		});
+		BackgroundGeolocation.on('error', function(error) {
+			console.log('[ERROR] BackgroundGeolocation error:', error.code, error.message);
+		});
+		BackgroundGeolocation.on('start', function() {
+			console.log('[INFO] BackgroundGeolocation service has been started');
+		});
+		BackgroundGeolocation.on('stop', function() {
+			console.log('[INFO] BackgroundGeolocation service has been stopped');
+		});
+		BackgroundGeolocation.on('background', function() {
+			console.log('[INFO] App is in background');
+			// you can also reconfigure service (changes will be applied immediately)
+			BackgroundGeolocation.configure({ debug: true });
+		});
+		BackgroundGeolocation.on('foreground', function() {
+			console.log('[INFO] App is in foreground');
+			BackgroundGeolocation.configure({ debug: false });
+		});
+		BackgroundGeolocation.on('abort_requested', function() {
+			console.log('[INFO] Server responded with 285 Updates Not Required');
+			// Here we can decide whether we want stop the updates or not.
+			// If you've configured the server to return 285, then it means the server does not require further update.
+			// So the normal thing to do here would be to `BackgroundGeolocation.stop()`.
+			// But you might be counting on it to receive location updates in the UI, so you could just reconfigure and set `url` to null.
+		});
+		BackgroundGeolocation.on('http_authorization', () => {
+			console.log('[INFO] App needs to authorize the http requests');
+		});
+		*/
+		BackgroundGeolocation.on('error', function(error) {
+			//if(app) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'Mon Appli Taxi', 'OK');
+			//else alert('BackgroundGeolocation error');
+			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
+				backgroundGeolocation.showAppSettings();
+			});
+		});
+		BackgroundGeolocation.on('authorization', function(status) {
+			if (status !== BackgroundGeolocation.AUTHORIZED) {
+				// we need to set delay or otherwise alert may not be shown
+				setTimeout(function() {
+					navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
+						backgroundGeolocation.showAppSettings();
+					});
+				}, 1000);
+			}
+		});
+		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
+		BackgroundGeolocation.configure({
+			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
+			stationaryRadius: 1000,
+			distanceFilter: 1000,
+			activityType: 'AutomotiveNavigation',
+			startForeground: true,
+			debug: true,
+			interval: 60000,
+			fastestInterval: 30000,
+			activitiesInterval: 30000,
+			notificationTitle: 'BoursoConvois',
+			notificationText: 'Suivi de votre position',
+			//url: globals.serverAddress,
+			//httpHeaders: {
+			//  'X-FOO': 'bar'
+			//},
+			// customize post properties
+			//postTemplate: {
+			//  lat: '@latitude',
+			//  lng: '@longitude',
+			//  foo: 'bar' // you can also add your own properties
+			//},
+			notificationIconColor: '#FEDD1E'
+		});
+		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
+		BackgroundGeolocation.start();
+		App.getLocation();
+		cordova.plugins.notification.local.clearAll(function() {
+			//alert("All notifications cleared");
+		}, this);
+		/*
+		var assosPop = window.open('http://taximedia.fr/assos/','_blank','location=false,enableViewportScale=yes,scrollbars=no,closebuttoncaption=Fermer');
+		setTimeout(function() {
+			assosPop.close();
+		}, 5000);
+		*/
+	},
+	alertDismissed: function() {
+		// Do nothing !
+	},
+	/*
+	bgFunctionToRun: function() {
+		if(hail_id!="") check_answer_open();
+		if(idcourse!="") check_answer();
+	},
+	// GESTION DES BOUTONS MATERIEL
+	// Bouton retour
+	onBackKeyDown: function() {
+		navigator.notification.alert("Veuillez ne pas quitter Mon Appli Taxi pendant la recheche de taxi disponibles", App.alertDismissed, 'Mon Appli Taxi', 'OK');
+	},
+	onResume: function() {
+		setTimeout(function() {
+			if((navigator.network.connection.type == Connection.NONE) || !window.jQuery){
+				$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
+			}
+		}, 500);// iOS Quirks
+	},
+	// Bouton menu
+	onMenuKeyDown: function() {
+		// Do something
+	},
+	// Escaping...
+	onPause: function() {
+		if(idcourse!='') {
+			stopCall();
+			navigator.notification.alert("SI VOUS AVIEZ UNE COMMANDE EN COURS ELLE A ETE ANNULEE ! (CELA NE S'APPLIQUE PAS AUX RESERVATIONS)");
+		}
+	},
+	*/
+	changePage: function(pageToShow) {
+		$('.fullpage').not(pageToShow).fadeOut();
+		$(pageToShow).fadeIn();
 	},
 
 	logMeIn: function (myParentDiv) {
@@ -80,14 +266,13 @@ App = {
 				$.localStorage.setItem('pilote_comp', data.company);
 				$.localStorage.setItem('imat', data.imat);
 				$.localStorage.setItem('vpgm', data.vpgm);
-				$('#loginPage').fadeOut();
-				$('#homePage').fadeIn();
+				App.changePage('#homePage');
 				setTimeout(function(){
 					App.refreshGlobals(data);
 				}, 1000);
 			}
 			else {
-				if(app) navigator.notification.alert("Identifiant ou mot de passe erroné !", alertDismissed, 'BoursoConvois', 'OK');
+				if(app) navigator.notification.alert("Identifiant ou mot de passe erroné !", App.alertDismissed, 'BoursoConvois', 'OK');
 				else alert("Identifiant ou mot de passe erroné !");
 			}
 		}, "json").always(function() {
@@ -154,10 +339,10 @@ App = {
 		$(myFormDiv).addClass('was-validated');
 	},
 	
-	locateMe: function(myEvent) {
+	getLocation: function(myEvent) {
 		switch(myEvent) 
 		{
-			case "load":
+			case "Map":
 				if (navigator.geolocation)
 				{
 					if (navigator.userAgent.toLowerCase().match(/android/)) {
@@ -175,10 +360,10 @@ App = {
 				if (navigator.geolocation)
 				{
 					if (navigator.userAgent.toLowerCase().match(/android/)) {
-						navigator.geolocation.getCurrentPosition(App.codeLatLng, App.showError,{enableHighAccuracy:false, maximumAge:0, timeout: 9000});
+						navigator.geolocation.getCurrentPosition(App.sendLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 30000});
 					}
 					else {
-						navigator.geolocation.getCurrentPosition(App.codeLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 9000});
+						navigator.geolocation.getCurrentPosition(App.sendLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 10000});
 					}
 				}
 				else {
@@ -220,12 +405,31 @@ App = {
 				$.sessionStorage.setItem('dep', dep);
 			}
 			else {
-				if(app) navigator.notification.alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.', alertDismissed, 'Mon Appli Taxi', 'OK');
+				if(app) navigator.notification.alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.', App.alertDismissed, 'Mon Appli Taxi', 'OK');
 				else alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.');
 			}
 		}, "json").done(function() { 
 		});
 		*/
+	},
+
+	sendLatLng: function(position) {
+		lat = parseFloat(position.coords.latitude);
+		lng = parseFloat(position.coords.longitude);
+		if((lat!=previousLat) && (lng!=previousLng)) {
+			$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
+				if(data.ok=="ok") {
+					returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
+				}
+				else
+					returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
+					$("#returns").empty().append();
+			}, "json").always(function(data){
+				previousLat = lat;
+				previousLng = lng;
+				setTimeout('App.getLocation()', 60000); // Every sixty seconds you check geolocation...
+			});
+		}
 	},
 
 	showError: function(error)
@@ -248,14 +452,22 @@ App = {
 			default:
 			  geoAlert="Erreur de Géolocalisation, libre à vous d'activer le service de géolocalisation pour cette app dans les réglages.";
 		}
-		if (error.code == error.TIMEOUT || error.code == error.POSITION_UNAVAILABLE) {
+		if (error.code == error.TIMEOUT) {
 			// Fall back to low accuracy and any cached position available...
-			navigator.geolocation.getCurrentPosition(App.codeLatLng, function(){
-				alert(geoAlert);
-			},{enableHighAccuracy:false, maximumAge:Infinity, timeout: 6000});
+			navigator.geolocation.getCurrentPosition(get_coords, function(){
+				getLocation(); // We got out of the loop so we get back in !
+				if(!geoFailedAlertOnce) {
+					geoFailedAlertOnce = true;
+					if(app) navigator.notification.alert(geoAlert, alertDismissed, 'Mon Appli Taxi', 'OK');
+					else alert(geoAlert);
+				}
+			},{enableHighAccuracy:false, maximumAge:10000, timeout: 60000});
 		}
 		else {
-			alert(geoAlert);
+			getLocation(); // We got out of the loop so we get back in !
+			//$( "#errorPop" ).popup( "open", { positionTo: "window" } );
+			if(app) navigator.notification.alert(geoAlert, alertDismissed, 'Mon Appli Taxi', 'OK');
+			else alert(geoAlert);
 		}
 	},
 	
@@ -309,7 +521,7 @@ App = {
 			});
 		}
 		else {
-			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", alertDismissed, 'Mon Appli Taxi', 'OK');
+			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'Mon Appli Taxi', 'OK');
 			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
 		}
 	},
@@ -370,7 +582,7 @@ App = {
 			});
 		}
 		else {
-			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", alertDismissed, 'Mon Appli Taxi', 'OK');
+			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'Mon Appli Taxi', 'OK');
 			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
 		}
 		// Filling info fields
@@ -566,34 +778,17 @@ App = {
 		}
 	},
 	
-	bindUIActions: function() {
+	bindUIActions: function() {	
+		if(!app) App.getLocation();
 		// Is it Mobile device
 		if(/Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)) isMobile = true;
 		if(isMobile) {
-			$('#dateDep').prop('type', 'datetime');
-			$('#dateFin').prop('type', 'datetime');
+			//$('#dateDep').prop('type', 'datetime');
+			//$('#dateFin').prop('type', 'datetime');
 		}
 		// Connected or not
 		if(globals.pass == "OK") {
-			$('#header-not-yet-connected').hide();
-			$('#header-connected').show();
-			switch (globals.type) {
-				case '0':
-					$('#header-connected-transporteurs').show();
-				  break;
-				case '1':
-					$('#header-connected-pilotes').show();
-				  break;
-				case '2':
-					$('#header-connected-stores').show();
-				  break;
-				default:
-					alert("Connecté sans type !!");
-			}
-		}
-		else {
-			$('#header-connected').hide();
-			$('#header-not-yet-connected').show();
+			App.changePage('#homePage');
 		}
 		$('.expends').click(function () {
 			$(this).next('div').slideToggle('slow');
