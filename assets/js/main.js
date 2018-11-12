@@ -251,11 +251,9 @@ App = {
 		}
 	},
 
-	function openSomeUrl(url)
-	{
-		//window.plugins.childBrowser.showWebPage('https://www.taximedia.fr/redir.php', { showLocationBar: true });
+	openSomeUrl: function(url) {
 		window.open(url,'_blank','location=false,enableViewportScale=yes,scrollbars=yes,closebuttoncaption=Fermer');
-	}
+	},
 	
 	logMeIn: function (myParentDiv) {
 		$(myParentDiv+' #sender').attr("disabled", true);
@@ -321,7 +319,7 @@ App = {
 		$('#sender-forgotten').attr("disabled", true);
 		let forgotEmail = $('#forgotEmail').val();
 		//let forgotType = $('#forgotType').val();
-		$.post(globals.serverAddress, {req: 'forgottenPwd', login: forgotEmail}, function(data){
+		$.post(globals.serverAddress, {req: 'forgottenPwd', email: forgotEmail}, function(data){
 			if(data.ok=="ok")
 				alert("Votre mot de passe vous a été envoyé par email");
 			else 
