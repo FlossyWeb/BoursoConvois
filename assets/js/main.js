@@ -1,4 +1,4 @@
-var globals, map, isMobile=false, app, lat, lng, previousLat, previousLng
+var globals, map, isMobile=false, app, lat, lng, previousLat=0, previousLng=0
 App = {
 
 	settings: {
@@ -242,13 +242,12 @@ App = {
 	},
 	*/
 	changePage: function(pageToShow, previousPage) {
-		$('.fullpage').not(pageToShow).fadeOut();
-		$(pageToShow).fadeIn();
-		// Modifying return link...
-		if(previousPage != '') {
-			$('#returnLink').attr('onclick', '').attr('onclick', 'App.changePage(\''+previousPage+'\', \''+pageToShow+'\')');
-			//$('#returnLink').attr('onclick', 'App.changePage(\''+previousPage+'\')');
+		if(pageToShow != previousPage) {
+			$('.fullpage').not('#'+pageToShow).fadeOut();
+			$('#'+pageToShow).fadeIn();
 		}
+		// Modifying return link...
+		$('#returnLink').attr('onclick', '').attr('onclick', 'App.changePage(\'#'+previousPage+'\', \'#'+pageToShow+'\')');
 	},
 
 	openSomeUrl: function(url) {
@@ -277,7 +276,7 @@ App = {
 				$.localStorage.setItem('imat', data.imat);
 				$.localStorage.setItem('vpgm', data.vpgm);
 				App.refreshGlobals(data);
-				App.changePage('#homePage', '');
+				App.changePage('homePage', '');
 				$('#navLinks .connected').show();
 				setTimeout(function(){
 					App.getLeads('loadEvent', true);
@@ -365,7 +364,7 @@ App = {
 					}
 				}
 				else {
-					alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connection ainsi que la disponibilit&eacute; des services de localisation dans les réglages de votre appareil.");
+					alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connexion ainsi que la disponibilité des services de localisation dans les réglages de votre appareil.");
 				}
 			  break;
 			default:
@@ -379,7 +378,7 @@ App = {
 					}
 				}
 				else {
-					alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connection ainsi que la disponibilit&eacute; des services de localisation dans les réglages de votre appareil.");
+					alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connexion ainsi que la disponibilité des services de localisation dans les réglages de votre appareil.");
 				}
 		}
 	},
@@ -432,13 +431,13 @@ App = {
 			$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
 				if(data.ok=="ok") {
 					returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
+					previousLat = lat;
+					previousLng = lng;
 				}
 				else
 					returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
-					$("#returns").empty().append();
+				//$("#returns").empty().append();
 			}, "json").always(function(data){
-				previousLat = lat;
-				previousLng = lng;
 				setTimeout('App.getLocation()', 60000); // Every sixty seconds you check geolocation...
 			});
 		}
@@ -467,7 +466,7 @@ App = {
 		if (error.code == error.TIMEOUT) {
 			// Fall back to low accuracy and any cached position available...
 			navigator.geolocation.getCurrentPosition(get_coords, function(){
-				getLocation(); // We got out of the loop so we get back in !
+				App.getLocation(); // We got out of the loop so we get back in !
 				if(!geoFailedAlertOnce) {
 					geoFailedAlertOnce = true;
 					if(app) navigator.notification.alert(geoAlert, alertDismissed, 'Mon Appli Taxi', 'OK');
@@ -476,7 +475,7 @@ App = {
 			},{enableHighAccuracy:false, maximumAge:10000, timeout: 60000});
 		}
 		else {
-			getLocation(); // We got out of the loop so we get back in !
+			App.getLocation(); // We got out of the loop so we get back in !
 			//$( "#errorPop" ).popup( "open", { positionTo: "window" } );
 			if(app) navigator.notification.alert(geoAlert, alertDismissed, 'Mon Appli Taxi', 'OK');
 			else alert(geoAlert);
@@ -485,9 +484,9 @@ App = {
 	
 	showLeadOnMap: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr, lat_p, lng_p, timestamp_p, page)
 	{
-		if(page=='bourse') App.popMapFollowLeads();
+		App.popMapFollowLeads();
 		var greenIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-green.png'}), redIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-red.png'}), orangeIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-orange.png'});
-		App.clearMap('bourse');
+		App.clearMap('app');
 		var rdv = (addr_l!="") ? addr_l : city_l;
 		var dest = (addr_dest_l!="") ? addr_dest_l : city_dest_l;
 		var rdvLng;
@@ -542,17 +541,6 @@ App = {
 			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'Mon Appli Taxi', 'OK');
 			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
 		}
-		// Filling info fields
-		$('#addressInput').val(addr_l);
-		$('#DestAddress').val(addr_dest_l);
-		$('#etd').val(datedeb_l);
-		$('#eta').val(datefin_l);
-		$('#jobCat').val(cat_l);
-		$('#Accurate').val(name_l);
-		$('#cellular').val(tel_l);
-		$('#depDep').val(dep_l);
-		$('#depArr').val(dep_dest_l);
-		$('#coms').val("Longueur: "+long_l+", Largeur: "+large_l+", Hauteur: "+height_l+"et Masse: "+weight_l+"\n"+"Estimation Durée(heures)/Km: "+est_time+" / "+est_km+"\n"+"Immatriculations TR/SR: "+imat_tr+" / "+imat_sr+"\n"+"Postes: VP AV = "+vp_av+" / VP AR = "+vp_ar+" / Guideur(s) = "+guides+"\n");
 	},
 	
 	clearMap: function(page)
@@ -711,7 +699,7 @@ App = {
 				$('#fillJobDocument #obs_pilot').val(data.obs_pilot);
 			}
 		}, "json");
-		App.changePage('#jobDocPage', '#leadPage');
+		App.changePage('jobDocPage', 'leadPage');
 	},
 
 	fillAnswerLeads: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr, name_st)
@@ -742,9 +730,9 @@ App = {
 		snippet += '<div id="successfail"></div>';
 		snippet += '</div>'; // End card-body
 		//snippet += '</form>';
-		snippet += '<div class="card-footer border-warning"><button class="btn btn-primary btn-block" onclick="App.changePage(\'#homePage\', \'#leadPage\')"><i class="fa fa-chevron-circle-left"></i> Retour </i></button></div>';
+		snippet += '<div class="card-footer border-warning"><button class="btn btn-primary btn-block" onclick="App.changePage(\'homePage\', \'leadPage\')"><i class="fa fa-chevron-circle-left"></i> Retour </i></button></div>';
 		$('#leadsDetailsCont').empty().append(snippet);
-		App.changePage('#leadPage', '#homePage');
+		App.changePage('leadPage', 'homePage');
 	},
 
 	safeJsonParse: function(input) {
@@ -765,7 +753,7 @@ App = {
 		}
 		// Connected or not
 		if(globals.pass == "OK") {
-			App.changePage('#homePage', '');
+			App.changePage('homePage', '');
 			App.getLeads('loadEvent', true);
 			let d = new Date();
 			let year = d.getFullYear();
@@ -983,6 +971,7 @@ App = {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 		}
+		setTimeout(function(){ map.invalidateSize()}, 100);
 	},
 	closeMapPop: function()
 	{
