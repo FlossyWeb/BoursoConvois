@@ -20,7 +20,6 @@
 </head>
 
 <body>
-	<!--
     <nav class="navbar navbar-light navbar-expand-md custom-header">
         <div class="container-fluid">
 			<a class="navbar-brand" href="index.html" style="color:rgb(25,24,24);">
@@ -28,62 +27,18 @@
 			</a>
 			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
 			<div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav links">
-                    <li class="nav-item" role="presentation"><a class="nav-link custom-navbar" href="index.html#home">Accueil</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html#transporteurs">Notre concept</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html#pricing">Offres</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="modal" href="index.html#modal_contact">Contact</a></li>
-                </ul>
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="dropdown">
-						<a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#noscroll" id="dropdownMenuMain">Mon Compte&nbsp; </a>
-                        <div class="dropdown-menu dropdown-menu-right keep-open" id="mainDropdown" aria-labelledby="dropdownMenuMain">
-							<div id="header-not-yet-connected" class="form-group">
-								<div class="input-group input-login">
-									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
-									<input class="form-control" type="text" name="login" required="" placeholder="identifiant" id="login">
-								</div>
-								<div class="input-group input-login">
-									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
-									<input class="form-control" type="password" name="pass" required="" placeholder="Mot de passe" id="pass">
-								</div>
-								<div class="input-group input-login">
-									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
-									<select class="form-control" name="businessType" id="businessType">
-										<option value="" selected>Type de compte</option>
-										<option value="0">Transporteur</option>
-										<option value="1">Société Pilote</option>
-									</select>
-								</div>
-								<div class="dropdown-divider"></div>
-								<button class="btn btn-default login" id="sender-header" type="button" onclick="App.logMeIn('#header-not-yet-connected')">Connexion</button>
-							</div>
-							<div id="header-connected-transporteurs" style="display:none;">
-								<a class="dropdown-item" role="presentation" href="bourse.html"> Bourse aux convois </a>
-								<a class="dropdown-item" role="presentation" href="bourse.html#account"> Mes Informations </a>
-								<a class="dropdown-item" role="presentation" onclick="App.logMeOut()" href="#noscroll"> Déconnexion </a>
-							</div>
-							<div id="header-connected-pilotes" style="display:none;">
-								<a class="dropdown-item" role="presentation" href="bourse.html"> Bourse aux convois </a>
-								<a class="dropdown-item" role="presentation" id="goToDriversPlace" href="bourse.html#drivers"> Espace Pilotes </a>
-								<a class="dropdown-item" role="presentation" href="bourse.html#account"> Mes Informations </a>
-								<a class="dropdown-item" role="presentation" href="manager.html"> Interface manager </a>
-								<a class="dropdown-item" role="presentation" onclick="App.logMeOut()" href="#noscroll"> Déconnexion </a>
-							</div>
-							<div id="header-connected-stores" style="display:none;">
-								<a class="dropdown-item" role="presentation" href="stores.html"> Téléchargements </a>
-								<a class="dropdown-item" role="presentation" onclick="App.logMeOut()" href="#noscroll"> Déconnexion </a>
-							</div>
-						</div>
-                    </li>
+                <ul class="nav navbar-nav links" id="navLinks">
+                    <li class="nav-item" role="presentation"><a class="nav-link custom-navbar connected" onclick="App.changePage('#homePage')" href="#noscroll">Mes convois</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link custom-navbar connected" id="returnLink" onclick="App.changePage('#homePage')" href="#noscroll">Retour</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="modal" href="#modal_contact">Contact</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link custom-navbar connected" onclick="App.logMeOut()" href="#noscroll">Déconnexion</a></li>
                 </ul>
 			</div>
         </div>
     </nav>
-	-->
-    <div id="loginPage" class="container-fluid fullpage" style="background-image:url('assets/img/trucks_bg2.jpg');background-size:cover;background-position:center center;">
+    <div id="loginPage" class="container-fluid fullpage">
 		<div class="rounded16 center-all align-self-center d-lg-flex align-items-lg-center align-self-lg-stretch bg-white p-5" id="login-block">
-			<div class="m-auto w-lg-75 w-xl-50" style="text-align:center;">
+			<div class="m-auto w-lg-90 w-xl-60" style="text-align:center;">
 				<img class="img-responsive" src="assets/img/logo.boursoconvois.680.png" width="100%" style="max-width:680px;" alt="BoursoConvois">
 				<!-- <h3 class="text-warning font-weight-light mb-5">Ensemble modernisons l'escorte</h3> -->
 				<p class="text-warning"><b>Ensemble modernisons l'escorte</b></p>
@@ -103,8 +58,552 @@
 		</div>
     </div>
     <div id="homePage" class="container-fluid fullpage" style="display:none;">
-		<h1>Yeah yeah !!!</h1>
+		<!-- <section id="leads" style="background:#1D1D1B;"> -->
+		<section id="leads" style="">
+		<center>
+			<div class="container">
+				<div class="row type0">
+					<div class="col-6 col-sm-6 col-md-6 col-lg-6 type0">
+						<button type="button" onclick="App.getLeads('justMine', false)" class="btn btn-secondary btn-block type0"><i class="fa fa-filter"></i> Tous mes convois</button>
+					</div>
+					<div class="col-6 col-sm-6 col-md-6 col-lg-6 type0">
+						<button type="button" onclick="App.getLeads('justMineDate', false)" class="btn btn-warning btn-block type0"><i class="fa fa-filter"></i> Convois par date</button>
+					</div>
+				</div>
+				<hr>
+				<div class="row type0">
+					<div class="col-12 col-sm-12 col-md-12 col-lg-4">
+						<div class="input-group mb-3 type0">
+							<div class="input-group-prepend">
+								<button class="btn btn-info" onclick="App.getLeads('justMineDate', false)" type="button"><i class="fa fa-filter"></i> Année </button>
+							</div>
+							<select class="custom-select" id="filterYear0" onchange="App.getLeads('justMineDate', false)" aria-label="Année">
+								<option value="2018" label=" 2018 "> 2018 </option><option value="2019" label=" 2019 "> 2019 </option><option value="2020" label=" 2020 "> 2020 </option><option value="2021" label=" 2021 "> 2021 </option><option value="2022" label=" 2022 "> 2022 </option><option value="2023" label=" 2023 "> 2023 </option><option value="2024" label=" 2024 "> 2024 </option><option value="2025" label=" 2025 "> 2025 </option><option value="2026" label=" 2026 "> 2026 </option><option value="2027" label=" 2027 "> 2027 </option><option value="2028" label=" 2028 "> 2028 </option><option value="2029" label=" 2029 "> 2029 </option>
+							</select>
+						</div>
+					</div>
+					<div class="col-12 col-sm-12 col-md-12 col-lg-4">
+						<div class="input-group mb-3 type0">
+							<div class="input-group-prepend">
+								<button class="btn btn-info" onclick="App.getLeads('justMineDate', false)" type="button"><i class="fa fa-filter"></i> Mois </button>
+							</div>
+							<select class="custom-select" id="filterMonth0" onchange="App.getLeads('justMineDate', false)" aria-label="Mois">
+								<option value="01" label=" 01 "> 01 </option><option value="02" label=" 02 "> 02 </option><option value="03" label=" 03 "> 03 </option><option value="04" label=" 04 "> 04 </option><option value="05" label=" 05 "> 05 </option><option value="06" label=" 06 "> 06 </option><option value="07" label=" 07 "> 07 </option><option value="08" label=" 08 "> 08 </option><option value="09" label=" 09 "> 09 </option><option value="10" label=" 10 "> 10 </option><option value="11" label=" 11 "> 11 </option><option value="12" label=" 12 "> 12 </option>
+							</select>
+						</div>
+					</div>
+					<div class="col-12 col-sm-12 col-md-12 col-lg-4">
+						<div class="input-group mb-3 type0">
+							<div class="input-group-prepend">
+								<button class="btn btn-info" onclick="App.getLeads('justMineDate', false)" type="button"><i class="fa fa-filter"></i> Semaine </button>
+							</div>
+							<select class="custom-select" id="filterWeek0" onchange="App.getLeads('justMineDate', false)" aria-label="Mois">
+								<option value="" label="Aucune"> Aucune </option><option value="1" label=" 1 "> 1 </option><option value="2" label=" 2 "> 2 </option><option value="3" label=" 3 "> 3 </option><option value="4" label=" 4 "> 4 </option><option value="5" label=" 5 "> 5 </option><option value="6" label=" 6 "> 6 </option><option value="7" label=" 7 "> 7 </option><option value="8" label=" 8 "> 8 </option><option value="9" label=" 9 "> 9 </option><option value="10" label=" 10 "> 10 </option><option value="11" label=" 11 "> 11 </option><option value="12" label=" 12 "> 12 </option><option value="13" label=" 13 "> 13 </option><option value="14" label=" 14 "> 14 </option><option value="15" label=" 15 "> 15 </option><option value="16" label=" 16 "> 16 </option><option value="17" label=" 17 "> 17 </option><option value="18" label=" 18 "> 18 </option><option value="19" label=" 19 "> 19 </option><option value="20" label=" 20 "> 20 </option><option value="21" label=" 21 "> 21 </option><option value="22" label=" 22 "> 22 </option><option value="23" label=" 23 "> 23 </option><option value="24" label=" 24 "> 24 </option><option value="25" label=" 25 "> 25 </option><option value="26" label=" 26 "> 26 </option><option value="27" label=" 27 "> 27 </option><option value="28" label=" 28 "> 28 </option><option value="29" label=" 29 "> 29 </option><option value="30" label=" 30 "> 30 </option><option value="31" label=" 31 "> 31 </option><option value="32" label=" 32 "> 32 </option><option value="33" label=" 33 "> 33 </option><option value="34" label=" 34 "> 34 </option><option value="35" label=" 35 "> 35 </option><option value="36" label=" 36 "> 36 </option><option value="37" label=" 37 "> 37 </option><option value="38" label=" 38 "> 38 </option><option value="39" label=" 39 "> 39 </option><option value="40" label=" 40 "> 40 </option><option value="41" label=" 41 "> 41 </option><option value="42" label=" 42 "> 42 </option><option value="43" label=" 43 "> 43 </option><option value="44" label=" 44 "> 44 </option><option value="45" label=" 45 "> 45 </option><option value="46" label=" 46 "> 46 </option><option value="47" label=" 47 "> 47 </option><option value="48" label=" 48 "> 48 </option><option value="49" label=" 49 "> 49 </option><option value="50" label=" 50 "> 50 </option><option value="51" label=" 51 "> 51 </option><option value="52" label=" 52 "> 52 </option><option value="53" label=" 53 "> 53 </option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="leadsCont">
+				</div>
+			</div>
+			<div class="spacer32"></div>
+		</center>
+		</section>
     </div>
+    <div id="leadPage" class="container-fluid fullpage" style="display:none;">
+		<!-- <section id="leadsDetails" style="background:#1D1D1B;"> -->
+		<section id="leadsDetails" style="background:rgba(0,0,0,0.6);">
+		<center>
+			<div class="container">
+				<div id="leadsDetailsCont">
+				</div>
+			</div>
+			<div class="spacer32"></div>
+		</center>
+		</section>
+    </div>
+    <div id="jobDocPage" class="container-fluid fullpage" style="display:none;">
+		<!-- <section id="leadsDetails" style="background:#1D1D1B;"> -->
+		<section id="fillJobDocument">
+		<center>
+			<div class="container" style="background:rgba(0,0,0,0.6);">
+				<form action="javascript:App.modJobDocument('#formJobDocument');" method="get" id="formJobDocument">
+					<input type="hidden" name="auto_l" id="auto_l" value="">
+					<div class="form-row">
+						<div class="col-12 col-md-12" id="modJobDocumentStep1">
+							<div class="form-group"><label for="number_bdt">N&deg; Bon de transport</label><span class="required-input">*</span>
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-bookmark"></i></span></div>
+										<input class="form-control form-control-sm" type="tel" name="number_bdt" required="" placeholder="N&deg; Bon de transport" id="number_bdt">
+									</div>
+							</div>
+							<h2 class="h4"><i class="fa fa-location-arrow"></i> Départ<small><small class="required-input">&nbsp;(*obligatoires)</small></small></h2>
+								
+							<div class="form-group"><label for="date_cv">Mise à disposition VP demandée pour le</label><span class="required-input">*</span>
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-calendar-o"></i></span></div>
+									<input class="form-control form-control-sm" type="datetime" name="date_cv" required=""  placeholder="Date et heure" id="date_cv">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="transp_name">Transporteur</label><span class="required-input">*</span>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-address-book"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="transp_name" required="" placeholder="Transporteur" id="transp_name">
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="nat_charge">Nature du chargement</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-envelope-o"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="nat_charge" placeholder="Nature du chargement" id="nat_charge">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="imat_tr">Immatriculation TR</label><span class="required-input">*</span>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-id-card"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="imat_tr" required="" placeholder="Immatriculation TR" id="imat_tr">
+										</div>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="imat_sr">Immatriculation SR</label><span class="required-input">*</span>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-id-card-o"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="imat_sr" required="" placeholder="Immatriculation SR" id="imat_sr">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group"><label for="imat_vp">Immatriculation VP</label><span class="required-input">*</span>
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-address-card"></i></span></div>
+										<input class="form-control form-control-sm" type="text" name="imat_vp" required="" placeholder="Immatriculation VP" id="imat_vp">
+									</div>
+							</div>
+							<div class="form-row">
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="large">Largeur en mètres</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-arrows-h"></i></span></div>
+											<select class="form-control" name="large" id="large">
+												<option value="moins de 3">moins de 3</option><option value="entre 3 et 4">entre 3 et 4</option><option value="entre 4 et 4.5">entre 4 et 4.5</option><option value="plus de 4.5">plus de 4.5</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="long">Longueur en mètres</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-arrows-h"></i></span></div>
+											<select class="form-control" name="long" id="long">
+												<option value="moins de 20">moins de 20</option><option value="entre 20 et 25">entre 20 et 25</option><option value="entre 25 et 30">entre 25 et 30</option><option value="entre 30 et 40">entre 30 et 40</option><option value="plus de 40">plus de 40</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="height">Hauteur (si > 4.5m)</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-arrows-v"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="height" placeholder="Hauteur" id="height">
+										</div>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="weight">Masse</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-balance-scale"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="weight" placeholder="Masse" id="weight">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="categorie">Categorie</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-certificate"></i></span></div>
+											<select class="form-control" name="categorie" id="categorie">
+												<option value="2" selected>2</option><option value="3">3</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="num_pref">N&deg; d'arrêté préfectoral</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-bank"></i></span></div>
+											<input class="form-control" type="text" name="num_pref" placeholder="N&deg; d'arrêté" id="num_pref">
+										</div>
+									</div>
+								</div>
+							</div>
+							<h2 class="h4"><i class="fa fa-map "></i> Chauffeur / Pilote</h2>
+							<div class="form-row">
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="name_drv">Nom du chauffeur</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user-circle-o"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="name_drv" placeholder="Nom Prénom" id="name_drv">
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="name_vp">Nom du pilote</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user-circle"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="name_vp"  placeholder="Nom Prénom" id="name_vp">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col"><a href="#modal-header" class="btn btn-warning btn-block" id="leadToJobDocStep2">Suivant <i class="fa fa-chevron-circle-right"></i></a></div>
+								</div>
+							</div>
+							-->
+						</div>
+						<hr><hr>
+						<div class="col-12 col-md-12" id="modJobDocumentStep2">
+							<h2 class="h4"><i class="fa fa-map "></i> Itinéraire</h2>
+								
+							<div class="alert alert-info" role="alert"><b>Premier Jour</b></div>
+							<div class="form-row">
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="dep_datetime_1"><span style="color:green">Date/Heure Départ</span></label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+											<input class="form-control form-control-sm" type="datetime" name="dep_datetime_1" placeholder="Date/Heure Départ" id="dep_datetime_1">
+										</div>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="arr_datetime_1"><span style="color:red">Date/Heure Arrivée</span></label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+											<input class="form-control form-control-sm" type="datetime" name="arr_datetime_1" placeholder="Date/Heure Arrivée" id="arr_datetime_1">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="dep_city_dep_1"><span style="color:green">Département/Ville Départ</span></label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="dep_city_dep_1" placeholder="Département/Ville Départ" id="dep_city_dep_1">
+										</div>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="arr_city_dep_1"><span style="color:red">Département/Ville Arrivée</span></label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+											<input class="form-control form-control-sm" type="text" name="arr_city_dep_1" placeholder="Département/Ville Arrivée" id="arr_city_dep_1">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+								<div class="form-group"><label for="km_day_1">Km/Jour</label>
+									<div class="input-group">
+										<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+										<input class="form-control form-control-sm" type="number" name="km_day_1" placeholder="Km/Jour" id="km_day_1">
+									</div>
+								</div>
+							</div>
+							<hr>
+							<a href="#day_2" id="day_2_btn" class="btn btn-info btn-block expends" onclick="App.toggleThis('#day_3_btn')"><b>2ème Jour <i class="fa fa-chevron-circle-down"></i></b></a>
+							<div id="day_2" style="display:none;">
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_datetime_2"><span style="color:green">Date/Heure Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_2" placeholder="Date/Heure Départ" id="dep_datetime_2">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_datetime_2"><span style="color:red">Date/Heure Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_2" placeholder="Date/Heure Arrivée" id="arr_datetime_2">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_city_dep_2"><span style="color:green">Département/Ville Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="dep_city_dep_2" placeholder="Département/Ville Départ" id="dep_city_dep_2">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_city_dep_2"><span style="color:red">Département/Ville Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="arr_city_dep_2" placeholder="Département/Ville Arrivée" id="arr_city_dep_2">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="km_day_2">Km/Jour</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+											<input class="form-control form-control-sm" type="number" name="km_day_2" placeholder="Km/Jour" id="km_day_2">
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<a href="#day_3" id="day_3_btn" class="btn btn-info btn-block expends" onclick="App.toggleThis('#day_4_btn')" style="display:none;"><b>3ème Jour <i class="fa fa-chevron-circle-down"></i></b></a>
+							<div id="day_3" style="display:none;">
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_datetime_3"><span style="color:green">Date/Heure Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_3" placeholder="Date/Heure Départ" id="dep_datetime_3">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_datetime_3"><span style="color:red">Date/Heure Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_3" placeholder="Date/Heure Arrivée" id="arr_datetime_3">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_city_dep_3"><span style="color:green">Département/Ville Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="dep_city_dep_3" placeholder="Département/Ville Départ" id="dep_city_dep_3">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_city_dep_3"><span style="color:red">Département/Ville Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="arr_city_dep_3" placeholder="Département/Ville Arrivée" id="arr_city_dep_3">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="km_day_3">Km/Jour</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+											<input class="form-control form-control-sm" type="number" name="km_day_3" placeholder="Km/Jour" id="km_day_3">
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<a href="#day_4" id="day_4_btn" class="btn btn-info btn-block expends" onclick="App.toggleThis('#day_5_btn')" style="display:none;"><b>4ème Jour <i class="fa fa-chevron-circle-down"></i></b></a>
+							<div id="day_4" style="display:none;">
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_datetime_4"><span style="color:green">Date/Heure Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_4" placeholder="Date/Heure Départ" id="dep_datetime_4">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_datetime_4"><span style="color:red">Date/Heure Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_4" placeholder="Date/Heure Arrivée" id="arr_datetime_4">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_city_dep_4"><span style="color:green">Département/Ville Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="dep_city_dep_4" placeholder="Département/Ville Départ" id="dep_city_dep_4">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_city_dep_4"><span style="color:red">Département/Ville Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="arr_city_dep_4" placeholder="Département/Ville Arrivée" id="arr_city_dep_4">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="km_day_4">Km/Jour</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+											<input class="form-control form-control-sm" type="number" name="km_day_4" placeholder="Km/Jour" id="km_day_4">
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<a href="#day_5" id="day_5_btn" class="btn btn-info btn-block expends" style="display:none;"><b>5ème Jour <i class="fa fa-chevron-circle-down"></i></b></a>
+							<div id="day_5" style="display:none;">
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_datetime_5"><span style="color:green">Date/Heure Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_5" placeholder="Date/Heure Départ" id="dep_datetime_5">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_datetime_5"><span style="color:red">Date/Heure Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_5" placeholder="Date/Heure Arrivée" id="arr_datetime_5">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="dep_city_dep_5"><span style="color:green">Département/Ville Départ</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="dep_city_dep_5" placeholder="Département/Ville Départ" id="dep_city_dep_5">
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+										<div class="form-group"><label for="arr_city_dep_5"><span style="color:red">Département/Ville Arrivée</span></label>
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-location-arrow"></i></span></div>
+												<input class="form-control form-control-sm" type="text" name="arr_city_dep_5" placeholder="Département/Ville Arrivée" id="arr_city_dep_5">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group"><label for="km_day_5">Km/Jour</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-truck"></i></span></div>
+											<input class="form-control form-control-sm" type="number" name="km_day_5" placeholder="Km/Jour" id="km_day_5">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col-12 col-sm-12 col-md-12 col-lg-4">
+										<a href="#modal-header" class="btn btn-info btn-block" id="leadToJobDocStep1"><i class="fa fa-undo"></i> Retour</a>
+									</div>
+									<div class="col-12 col-sm-12 col-md-12 col-lg-8">
+										<a href="#modal-header" class="btn btn-warning btn-block" id="leadToJobDocStep3">Suivant <i class="fa fa-chevron-circle-right"></i></a>
+									</div>
+								</div>
+							</div>
+							-->
+						</div>
+						<hr><hr>
+						<div class="col-12 col-md-12" id="modJobDocumentStep3">
+							<h2 class="h4"><i class="fa fa-calendar-check-o"></i> Arrivée<small class="required-input">&nbsp;(*obligatoires)</small></h2>
+							
+							<div class="form-row">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group"><label for="vp_datetime_end">Départ effectif VP</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
+											<input class="form-control form-control-sm" type="datetime" name="vp_datetime_end" placeholder="Date/Heure Arrivée" id="vp_datetime_end">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group">
+										<label class="control-label" for="obs_driver">Observations chauffeur</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit"></i></span></div>
+											<textarea class="form-control" rows="5" name="obs_driver" placeholder="Retard, attente, pannes, participation au chargement..." id="obs_driver"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+									<div class="form-group">
+										<label class="control-label" for="obs_pilot">Observations pilote</label>
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit"></i></span></div>
+											<textarea class="form-control" rows="5" name="obs_pilot" placeholder="Retard, attente, pannes, participation au chargement..." id="obs_pilot"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col">
+									<div class="custom-control custom-checkbox form-control-lg">
+										<input type="checkbox" class="custom-control-input" id="iAgree" required="">
+										<label class="custom-control-label" for="iAgree">
+											<b>Je certifie l'exactitude des informations saisies.
+											<span class="required-input">*</span></b>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-row">
+									<!--
+									<div class="col-12 col-sm-12 col-md-12 col-lg-4">
+										<a href="#modal-header" class="btn btn-info btn-block" id="backToModStep2"><i class="fa fa-undo"></i> Retour</a>
+									</div>
+									<div class="col-12 col-sm-12 col-md-12 col-lg-8">
+										<button class="btn btn-primary btn-block" id="sender" onclick="App.addWasValidatedClass('#formJobDocument')" type="submit">Enregistrer <i class="fa fa-check-circle"></i></button>
+									</div>
+									-->
+									<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+										<button class="btn btn-warning btn-block" id="sender" onclick="App.addWasValidatedClass('#formJobDocument')" type="submit">Enregistrer <i class="fa fa-check-circle"></i></button>
+									</div>
+								</div>
+							</div>
+							<div id="successfail"></div>
+							<hr class="d-flex d-md-none">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="spacer32"></div>
+		</center>
+		</section>
+    </div>
+	<div id="popupmax">
+		<div id="inPopup">
+			<img src="assets/img/del.png" class="popBackMax" onClick="App.closeMapPop();"/>
+			<div id="mapLeads" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
 	<div class="modal fade" role="dialog" tabindex="-1" id="modal_contact" style="z-index: 100000;">
 		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -135,13 +634,13 @@
 										<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-envelope-o"></i></span></div><input class="form-control" type="email" name="from_email" required="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}$" placeholder="Adresse Email" id="from_email"></div>
 								</div>
 								<div class="form-row">
-									<div class="col-12 col-sm-12 col-md-12 col-lg-6">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
 										<div class="form-group"><label for="from_phone">Téléphone</label><span class="required-input">*</span>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i></span></div><input class="form-control" type="tel" required="" pattern="[0-9-+s()]+[0-9-+s()\s]+" name="from_phone" placeholder="Mobile ou fixe" id="from_phone"></div>
 										</div>
 									</div>
-									<div class="col-12 col-sm-12 col-md-12 col-lg-6">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6">
 										<div class="form-group"><label for="calltime">Rappel ?</label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div><select class="form-control" name="calltime" id="calltime"><optgroup label="De préférence le"><option value="Matin" selected="">Matin</option><option value="Aprés-Midi">Aprés-Midi</option><option value="Soirée">Soirée</option></optgroup></select></div>
@@ -165,7 +664,7 @@
 										<div class="static-map">
 											<a href="https://www.google.com/maps/place/452+Avenue+du+Prado,+13008+Marseille" target="_blank">
 												<!-- <img class="img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?autoscale=2&size=600x210&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid|color:0xff0000|label:|452+Avenue+du+Prado,+13008+Marseille&zoom=12&key=YOUR_API_KEY" alt="Google Map"> -->
-												<img class="img-responsive" src="assets/img/staticmap.png" alt="Google Map">
+												<img class="img-responsive" src="http://www.boursoconvois.com/assets/img/staticmap.png" alt="Google Map">
 											</a>
 										</div>
 									</div>
@@ -192,9 +691,10 @@
 			</div>
 		</div>
 	</div>
-	<!--
 	<div class="clearfix"></div>
-	<a href="#" class="go-up-fixed" title="Aller en haut"><i class="fa fa-arrow-up"></i></a>
+	<a href="#" class="go-up-fixed-img" title="Aller en haut"><img src="assets/img/Up_Button_flat.png" width="32Px;" height="32Px;"/></a>
+	<!-- <a href="#" class="go-up-fixed" title="Aller en haut"><i class="fa fa-arrow-up"></i></a> -->
+	<!--
 	<footer>
 		<div class="row" id="footer-div">
 			<div class="col-sm-6 col-md-4 footer-navigation">

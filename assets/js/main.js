@@ -7,8 +7,9 @@ App = {
 		defZoom: 6,
 		bottomScrolled: false,
 		lead: '',
+		getLeadsFilter: false,
+		getLeadsEvent: 'loadEvent',
 		serverAddress: "https://www.boursoconvois.com/db/in_app_calls.php",
-		loginAddress: "https://www.boursoconvois.com/db/in_station_calls.php",
 		year: (new Date).getFullYear(),
 		login: $.localStorage.getItem('login'),
 		pwd: $.localStorage.getItem('pwd'),
@@ -240,9 +241,14 @@ App = {
 		}
 	},
 	*/
-	changePage: function(pageToShow) {
+	changePage: function(pageToShow, previousPage) {
 		$('.fullpage').not(pageToShow).fadeOut();
 		$(pageToShow).fadeIn();
+		// Modifying return link...
+		if(previousPage != '') {
+			$('#returnLink').attr('onclick', '').attr('onclick', 'App.changePage(\''+previousPage+'\', \''+pageToShow+'\')');
+			//$('#returnLink').attr('onclick', 'App.changePage(\''+previousPage+'\')');
+		}
 	},
 
 	logMeIn: function (myParentDiv) {
@@ -250,7 +256,7 @@ App = {
 		var credLogin = $(myParentDiv+' #login').val();
 		var credPass = $(myParentDiv+' #pass').val();
 		//var credType = $(myParentDiv+' #businessType').val();
-		$.post(globals.loginAddress, {req: 'login', login: credLogin, pass: credPass, type: 2}, function(data){
+		$.post(globals.serverAddress, {req: 'login', login: credLogin, pass: credPass, type: 2}, function(data){
 			if(data.pass == "OK") {
 				$.localStorage.setItem('pass', data.pass);
 				$.localStorage.setItem('login', data.login);
@@ -266,10 +272,12 @@ App = {
 				$.localStorage.setItem('pilote_comp', data.company);
 				$.localStorage.setItem('imat', data.imat);
 				$.localStorage.setItem('vpgm', data.vpgm);
-				App.changePage('#homePage');
+				App.refreshGlobals(data);
+				App.changePage('#homePage', '');
+				$('#navLinks .connected').show();
 				setTimeout(function(){
-					App.refreshGlobals(data);
-				}, 1000);
+					App.getLeads('loadEvent', true);
+				}, 100);
 			}
 			else {
 				if(app) navigator.notification.alert("Identifiant ou mot de passe erroné !", App.alertDismissed, 'BoursoConvois', 'OK');
@@ -471,61 +479,6 @@ App = {
 		}
 	},
 	
-	searchLocations: function()
-	{
-		App.clearMap();
-		var blackIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-black.png'}), greyIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-grey.png'});
-		var rdv = $('#addressInput').val();
-		var dest = $('#DestAddress').val();
-		var rdvLng;
-		var rdvLat;
-		var destLng;
-		var destLat;
-		if (rdv!='' && dest!='') {
-			// Using https://adresse.data.gouv.fr
-			//https://api-adresse.data.gouv.fr/search/?q=8 bd du port&type=street
-			$.get('https://api-adresse.data.gouv.fr/search/', {q: rdv, type: ''}, function(data) {
-				rdvLng = data.features[0].geometry.coordinates[0];
-				rdvLat = data.features[0].geometry.coordinates[1];
-				//zipPrices = data.features[0].properties.postcode;
-				//depPrices = zipPrices.substring(0, 2);
-			}, "json").done(function(data) { 
-				$.get('https://api-adresse.data.gouv.fr/search/', {q: dest, type: ''}, function(data) {
-					destLng = data.features[0].geometry.coordinates[0];
-					destLat = data.features[0].geometry.coordinates[1];
-				}, "json").done(function(data) { 
-					let lat = parseFloat(rdvLat);
-					let lng = parseFloat(rdvLng);
-					let dLat = parseFloat(destLat);
-					let dLng = parseFloat(destLng);
-					let latlng = [lat, lng];
-					let dlatlng = [dLat, dLng];
-					//alert(latlng);
-					globals.defLatLng = latlng;
-					globals.defdestLatLng = dlatlng;
-					//map.setView(L.LatLng(lat,lng), globals.defZoom);
-					map.setView(latlng, globals.defZoom);
-					L.marker(globals.defLatLng, {icon: greyIcon}).addTo(map)
-						.bindPopup('<p><b>Départ: </b>'+rdv+'</p>', {autoClose: false})
-						.openPopup();
-					L.marker(globals.defdestLatLng, {icon: blackIcon}).addTo(map)
-						.bindPopup('<p><b>Arrivée: </b>'+dest+'</p>')
-						.openPopup();
-					var circle = L.circle(globals.defLatLng, {
-						color: '#FFAB00',
-						fillColor: '#FFBF00',
-						fillOpacity: 0.2,
-						radius: 100000
-					}).addTo(map);
-				});
-			});
-		}
-		else {
-			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'Mon Appli Taxi', 'OK');
-			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
-		}
-	},
-	
 	showLeadOnMap: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr, lat_p, lng_p, timestamp_p, page)
 	{
 		if(page=='bourse') App.popMapFollowLeads();
@@ -569,7 +522,7 @@ App = {
 						.openPopup();
 					if(lat_p!=0 && lng_p!=0) {
 						L.marker(latlng_p, {icon: orangeIcon}).addTo(map)
-							.bindPopup('<p><b>Convois positionné le:<br>'+timestamp_p+'</b></p>', {autoClose: false})
+							.bindPopup('<p><b>Ma dernière position enregistrée le:<br>'+timestamp_p+'</b></p>', {autoClose: false})
 							.openPopup();
 						var circle = L.circle(latlng_p, {
 							color: '#FFAB00',
@@ -598,29 +551,6 @@ App = {
 		$('#coms').val("Longueur: "+long_l+", Largeur: "+large_l+", Hauteur: "+height_l+"et Masse: "+weight_l+"\n"+"Estimation Durée(heures)/Km: "+est_time+" / "+est_km+"\n"+"Immatriculations TR/SR: "+imat_tr+" / "+imat_sr+"\n"+"Postes: VP AV = "+vp_av+" / VP AR = "+vp_ar+" / Guideur(s) = "+guides+"\n");
 	},
 	
-	showDriverOnMap: function(lat_p, lng_p, timestamp_p, page)
-	{
-		var greenIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-green.png'}), redIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-red.png'}), orangeIcon = new globals.LeafIcon({iconUrl: 'assets/img/leaflet/marker-icon-2x-orange.png'});
-		App.clearMap('bourse');
-		let latlng_p = [parseFloat(lat_p), parseFloat(lng_p)];
-		//map.setView(L.LatLng(lat,lng), globals.defZoom);
-		map.setView(latlng_p, globals.defZoom);
-		if(lat_p!=0 && lng_p!=0) {
-			L.marker(latlng_p, {icon: orangeIcon}).addTo(map)
-				.bindPopup('<p><b>VP / Guideur positionné le:<br>'+timestamp_p+'</b></p>')
-				.openPopup();
-			var circle = L.circle(latlng_p, {
-				color: '#FFAB00',
-				fillColor: '#FFBF00',
-				fillOpacity: 0.2,
-				radius: 100000
-			}).addTo(map);
-			// hidePanel
-			$('#hidePanel').trigger('click');
-		}
-		else alert("Ce VP / Guideur n'a jamais été géolocalisé !!");
-	},
-	
 	clearMap: function(page)
 	{
 		//markers.clearLayers();
@@ -641,21 +571,13 @@ App = {
 		}
 		if(myEvent==globals.getLeadsEvent) { // Prevent next occuration of "old setTimeout" refresh after a new filter is pushed
 			var filterDep = "", filterYear = "", filterMonth = "", filterWeek = "";
-			if(myEvent=="justMineDep") filterDep = $('#filterDep0').val();
-			else if (myEvent=="Dep") filterDep = $('#filterDep1').val();
 			if(myEvent=="justMineDate") {
 				filterYear = $('#filterYear0').val();
 				filterMonth = $('#filterMonth0').val();
 				filterWeek = $('#filterWeek0').val();
 			}
-			else if (myEvent=="Date") {
-				filterYear = $('#filterYear1').val();
-				filterMonth = $('#filterMonth1').val();
-				filterWeek = $('#filterWeek1').val();
-			}
 			$.post(globals.serverAddress, {id: globals.id, admin: globals.admin, type: globals.type, pwd: globals.pwd, req: 'getLeads', filter: myEvent, dep: filterDep, year: filterYear, month: filterMonth, week: filterWeek}, function(data){ 
 				if(data.ok=="ok") {
-					// $('#leadsCont') to be filled
 					$('#leadsCont').empty().append(data.leads);
 				}
 				else {
@@ -698,11 +620,11 @@ App = {
 		else alert("Votre demande de convoi doit requérir au moins un VP ou guideur !");
 	},
 
-	modLeads: function(myFormDiv)
+	modJobDocument: function(myFormDiv)
 	{
 		$(myFormDiv+' #sender').attr("disabled", true);
 		let query = $(myFormDiv).serialize();
-		let req = "modLeads";
+		let req = "modJobDocument";
 		query = query + "&id=" + globals.id + "&pwd=" + globals.pwd + "&req=" + req;
 		var returns = "";
 		//$(myFormDiv+' #successfail').append('<div class="alert alert-success" role="alert"><b>Query : '+query+'</b></div>');
@@ -719,55 +641,107 @@ App = {
 		});
 	},
 
-	fillModLeads: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr)
+	fillJobDocument: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr, name_st)
 	{
-		$('#modFormLeads #auto_l').val(auto_l);
-		$('#modFormLeads #addressAutoMod').val(addr_l);
-		$('#modFormLeads #address_comp').val(addr_comp_l);
-		$('#modFormLeads #depMod').val(dep_l);
-		$('#modFormLeads #cityDepMod').val(city_l);
-		$('#modFormLeads #addressDestAutoMod').val(addr_dest_l);
-		$('#modFormLeads #address_dest_comp').val(addr_dest_comp_l);
-		$('#modFormLeads #depDestMod').val(dep_dest_l);
-		$('#modFormLeads #cityDestMod').val(city_dest_l);
-		$('#modFormLeads #dateDepMod').val(datedeb_l);
-		$('#modFormLeads #dateFinMod').val(datefin_l);
-		$('#modFormLeads #categorie').val(cat_l);
-		$('#modFormLeads #long').val(long_l);
-		$('#modFormLeads #large').val(large_l);
-		$('#modFormLeads #height').val(height_l);
-		$('#modFormLeads #weight').val(weight_l);
-		$('#modFormLeads #est_time').val(est_time);
-		$('#modFormLeads #est_km').val(est_km);
-		$('#modFormLeads #num_pref').val(num_arr_pref);
-		$('#modFormLeads #vp_av').val(vp_av);
-		$('#modFormLeads #vp_ar').val(vp_ar);
-		$('#modFormLeads #guides').val(guides);
-		$('#modFormLeads #name_drv').val(name_l);
-		$('#modFormLeads #phone_drv').val(tel_l);
-		$('#modFormLeads #imat_tr').val(imat_tr);
-		$('#modFormLeads #imat_sr').val(imat_sr);
-		// Fill the delLeadCont with detLead Button (auto_l)
-		let delLeadBtn = '<a href="#modal-header" class="btn btn-danger btn-block" id="delLeadBtn" onClick="App.delLeads(\''+auto_l+'\')"><i class="fa fa-eraser"></i> Supprimer</a>';
-		$('#modFormLeads #delLeadCont').empty().append(delLeadBtn);
+		// First time filling it...
+		$('#fillJobDocument #auto_l').val(auto_l);
+		//$('#fillJobDocument #number_bdt').val();
+		$('#fillJobDocument #date_cv').val(datedeb_l);
+		$('#fillJobDocument #transp_name').val(name_st);
+		//$('#fillJobDocument #nat_charge').val();
+		$('#fillJobDocument #imat_tr').val(imat_tr);
+		$('#fillJobDocument #imat_sr').val(imat_sr);
+		$('#fillJobDocument #imat_vp').val(globals.imat);
+		$('#fillJobDocument #large').val(large_l);
+		$('#fillJobDocument #long').val(long_l);
+		$('#fillJobDocument #height').val(height_l);
+		$('#fillJobDocument #weight').val(weight_l);
+		$('#fillJobDocument #categorie').val(cat_l);
+		$('#fillJobDocument #num_pref').val(num_arr_pref);
+		$('#fillJobDocument #name_drv').val(name_l);
+		$('#fillJobDocument #name_vp').val(globals.nom);
+		// Then filling it with possible already sent informations...
+		$.post(globals.serverAddress, {id: globals.id, type: globals.type, pwd: globals.pwd, auto_l: auto_l, req: 'getLeadsDocument'}, function(data){ 
+			if(data.ok=="ok") {
+				$('#fillJobDocument #number_bdt').val(data.number_bdt);
+				$('#fillJobDocument #date_cv').val(data.date_cv);
+				$('#fillJobDocument #transp_name').val(data.transp_name);
+				$('#fillJobDocument #nat_charge').val(data.nat_charge);
+				$('#fillJobDocument #imat_tr').val(data.imat_tr);
+				$('#fillJobDocument #imat_sr').val(data.imat_sr);
+				$('#fillJobDocument #imat_vp').val(data.imat_vp);
+				$('#fillJobDocument #large').val(data.large_ld);
+				$('#fillJobDocument #long').val(data.long_ld);
+				$('#fillJobDocument #height').val(data.height_ld);
+				$('#fillJobDocument #weight').val(data.weight_ld);
+				$('#fillJobDocument #categorie').val(data.categorie);
+				$('#fillJobDocument #num_pref').val(data.num_pref);
+				$('#fillJobDocument #name_drv').val(data.name_drv);
+				$('#fillJobDocument #name_vp').val(data.name_vp);
+				$('#fillJobDocument #dep_datetime_1').val(data.dep_datetime_1);
+				$('#fillJobDocument #arr_datetime_1').val(data.arr_datetime_1);
+				$('#fillJobDocument #dep_datetime_2').val(data.dep_datetime_2);
+				$('#fillJobDocument #arr_datetime_2').val(data.arr_datetime_2);
+				$('#fillJobDocument #dep_datetime_3').val(data.dep_datetime_3);
+				$('#fillJobDocument #arr_datetime_3').val(data.arr_datetime_3);
+				$('#fillJobDocument #dep_datetime_4').val(data.dep_datetime_4);
+				$('#fillJobDocument #arr_datetime_4').val(data.arr_datetime_4);
+				$('#fillJobDocument #dep_datetime_5').val(data.dep_datetime_5);
+				$('#fillJobDocument #arr_datetime_5').val(data.arr_datetime_5);
+				$('#fillJobDocument #dep_city_dep_1').val(data.dep_city_dep_1);
+				$('#fillJobDocument #arr_city_dep_1').val(data.arr_city_dep_1);
+				$('#fillJobDocument #dep_city_dep_2').val(data.dep_city_dep_2);
+				$('#fillJobDocument #arr_city_dep_2').val(data.arr_city_dep_2);
+				$('#fillJobDocument #dep_city_dep_3').val(data.dep_city_dep_3);
+				$('#fillJobDocument #arr_city_dep_3').val(data.arr_city_dep_3);
+				$('#fillJobDocument #dep_city_dep_4').val(data.dep_city_dep_4);
+				$('#fillJobDocument #arr_city_dep_4').val(data.arr_city_dep_4);
+				$('#fillJobDocument #dep_city_dep_5').val(data.dep_city_dep_5);
+				$('#fillJobDocument #arr_city_dep_5').val(data.arr_city_dep_5);
+				$('#fillJobDocument #km_day_1').val(data.km_day_1);
+				$('#fillJobDocument #km_day_2').val(data.km_day_2);
+				$('#fillJobDocument #km_day_3').val(data.km_day_3);
+				$('#fillJobDocument #km_day_4').val(data.km_day_4);
+				$('#fillJobDocument #km_day_5').val(data.km_day_5);
+				$('#fillJobDocument #vp_datetime_end').val(data.vp_datetime_end);
+				$('#fillJobDocument #obs_driver').val(data.obs_driver);
+				$('#fillJobDocument #obs_pilot').val(data.obs_pilot);
+			}
+		}, "json");
+		App.changePage('#jobDocPage', '#leadPage');
 	},
 
-	delLeads: function(auto_l)
+	fillAnswerLeads: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr, name_st)
 	{
-		$('#delLeadBtn').attr("disabled", true);
-		let req = "delLeads";
-		let query ="&id=" + globals.id + "&pwd=" + globals.pwd + "&auto_l=" + auto_l + "&req=" + req;
-		$.post(globals.serverAddress, query, function(data){
-			if(data.ok=="ok") {
-				alert('Cette demande de convoi a bien été supprimée');
-				$('#modLeadModal').modal('toggle');
-				App.getLeads('loadEvent', true);
-			}
-			else
-				alert("Suite à un problème technique, cette demande de convoi n'a pas été supprimée.");
-		}, "json").always(function(data){
-			$('#delLeadBtn').attr("disabled", false);
-		});
+		// Generate lead's details page
+		globals.lead = auto_l; // remember that lead.
+		//let snippet = '<form action="javascript:App.answerLeads(\'#answerFormLeads\');" method="get" id="answerFormLeads">';
+		//snippet += '<input type="hidden" name="auto_l" id="auto_l" value="'+auto_l+'">';
+		let snippet = '<div class="card text-center w-auto border-warning">';
+		snippet += '<h4 class="card-header border-warning">Identifiant de Convoi<span style="color:#FA0;"> #'+auto_l+'</span></h4>';
+		snippet += '<div class="card-body"><h5 class="card-title"><span style="color:#FA0;">Prévu du </span>'+datedeb_l+'<span style="color:#FA0;"> au </span>'+datefin_l+'</h5></div>';
+		snippet += '<ul class="list-group list-group-flush">';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Départ : </span>'+addr_l+' (Dep.'+dep_l+') - '+addr_comp_l+'</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Arrivée : </span>'+addr_dest_l+' (Dep.'+dep_dest_l+') - '+addr_dest_comp_l+'</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Besoin de: </span>'+vp_av+' VP avant(s), '+vp_ar+' VP arrière(s), '+guides+' Guideur(s)</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Convoi de catégorie : </span>'+cat_l+'<span style="color:#FA0;"> | N&deg;Arrêté préfectoral : </span>'+num_arr_pref+'</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Durée et kilométrage estimatif du convoi : </span>'+est_time+' pour '+est_km+'</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Longueur : </span>'+long_l+'<span style="color:#FA0;"> x Largeur : </span>'+large_l+'<span style="color:#FA0;"> x Hauteur : </span>'+height_l+'<span style="color:#FA0;"> et Masse : </span>'+weight_l+'</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Immatriculation: TR (Tracteur) </span>'+imat_tr+'<span style="color:#FA0;"> | SR (Remorque) </span>'+imat_sr+'</b></li>';
+		snippet += '<li class="list-group-item"><b><span style="color:#FA0;">Contact chauffeur : </span>'+name_l+' / '+tel_l+'</b></li>';
+		snippet += '</ul>';
+		snippet += '<div class="card-body">';
+		snippet += '<div class="row">';
+		// Adding fill job' document button
+		snippet += '<button class="btn btn-warning btn-block" id="fillJobDocumentBtn" onclick="App.fillJobDocument(\''+auto_l+'\', \''+addr_l+'\', \''+addr_comp_l+'\', \''+dep_l+'\', \''+city_l+'\', \''+addr_dest_l+'\', \''+addr_dest_comp_l+'\', \''+dep_dest_l+'\', \''+city_dest_l+'\', \''+cat_l+'\', \''+num_arr_pref+'\', \''+name_l+'\', \''+tel_l+'\', \''+datedeb_l+'\', \''+datefin_l+'\', \''+long_l+'\', \''+large_l+'\', \''+height_l+'\', \''+weight_l+'\', \''+est_time+'\', \''+est_km+'\', \''+vp_av+'\', \''+vp_ar+'\', \''+guides+'\', \''+imat_tr+'\', \''+imat_sr+'\', \''+name_st+'\')"><i class="fa fa-hourglass-start"></i> Bon de transport</button>';
+		snippet += '</div>'; // End row
+		//snippet += '<button class="btn btn-warning btn-block" id="sender" onclick="App.addWasValidatedClass(\'#answerFormLeads\')" type="submit">Valider <i class="fa fa-check-circle"></i></button>';
+		snippet += '<div id="successfail"></div>';
+		snippet += '</div>'; // End card-body
+		//snippet += '</form>';
+		snippet += '<div class="card-footer border-warning"><button class="btn btn-primary btn-block" onclick="App.changePage(\'#homePage\', \'#leadPage\')"><i class="fa fa-chevron-circle-left"></i> Retour </i></button></div>';
+		$('#leadsDetailsCont').empty().append(snippet);
+		App.changePage('#leadPage', '#homePage');
 	},
 
 	safeJsonParse: function(input) {
@@ -788,7 +762,27 @@ App = {
 		}
 		// Connected or not
 		if(globals.pass == "OK") {
-			App.changePage('#homePage');
+			App.changePage('#homePage', '');
+			App.getLeads('loadEvent', true);
+			let d = new Date();
+			let year = d.getFullYear();
+			$('#filterYear0').val(year);
+			let m = d.getMonth(); // 0 to 11
+			var month = m+1; // 1 to 12
+			(month<10) ? month="0"+month : month=month;
+			$('#filterMonth0').val(month);
+			// Calculate week number
+			// Set to nearest Thursday: current date + 4 - current day number
+			// Make Sunday's day number 7
+			d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+			// Get first day of year
+			let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+			// Calculate full weeks to nearest Thursday
+			let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);				
+			$('#filterWeek0').val(weekNo);
+		}
+		else {
+			$('#navLinks .connected').hide();
 		}
 		$('.expends').click(function () {
 			$(this).next('div').slideToggle('slow');
@@ -844,8 +838,41 @@ App = {
 					$('.go-up-fixed').fadeIn('slow');
 			}
 		});
+		/*
+		// Here we hide steps in formJobDocument...
+		$('#modJobDocumentStep2').fadeOut();
+		$('#modJobDocumentStep3').fadeOut();
+		$('#leadToJobDocStep1').click(function () {
+			setTimeout(function() {$('#modJobDocumentStep1').fadeIn();}, 500);
+			$('#modJobDocumentStep2').fadeOut();
+			$('#modJobDocumentStep3').fadeOut();
+		});
+		$('#leadToJobDocStep2').click(function () {
+			$('#modJobDocumentStep1').fadeOut();
+			setTimeout(function() {$('#modJobDocumentStep2').fadeIn();}, 500);
+			$('#modJobDocumentStep3').fadeOut();
+		});
+		$('#leadToJobDocStep3').click(function () {
+			$('#modJobDocumentStep1').fadeOut();
+			$('#modJobDocumentStep2').fadeOut();
+			setTimeout(function() {$('#modJobDocumentStep3').fadeIn();}, 500);
+		});
+		$('#backToStep2').click(function () {
+			$('#modJobDocumentStep1').fadeOut();
+			setTimeout(function() {$('#modJobDocumentStep2').fadeIn();}, 500);
+			$('#modJobDocumentStep3').fadeOut();
+		});
+		*/
 	},
 	
+	showThis: function(toShow)
+	{
+		$(toShow).show();
+	},
+	toggleThis: function(toToggle)
+	{
+		$(toToggle).slideToggle();
+	},
 	popMapFollowLeads: function()
 	{
 		$('#popupmax').fadeIn();
