@@ -697,7 +697,7 @@ App = {
 				$('#fillJobDocument #vp_datetime_end').val(data.vp_datetime_end);
 				$('#fillJobDocument #obs_driver').val(data.obs_driver);
 				$('#fillJobDocument #obs_pilot').val(data.obs_pilot);
-				$('#fillJobDocument #getPdfCont').val('<button class="btn btn-danger btn-block" id="getPdfBtn" onclick="App.getPdf(\''+data.auto_ld+'\')"><i class="fa fa-hourglass-start"></i> Doc PDF</button>'');
+				$('#fillJobDocument #getPdfCont').val('<button class="btn btn-danger btn-block" id="getPdfBtn" onclick="App.getPdf(\''+data.auto_ld+'\')"><i class="fa fa-hourglass-start"></i> Doc PDF</button>');
 			}
 		}, "json");
 		App.changePage('jobDocPage', 'leadPage');
