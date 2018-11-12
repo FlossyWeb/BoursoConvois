@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover">
     <title>BoursoConvois</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/jquery-ui.min.css" />
+    <link type="text/css" rel="stylesheet" href="assets/css/jquery-ui-timepicker-addon.css" />
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
@@ -142,7 +144,7 @@
 							<div class="form-group"><label for="date_cv">Mise à disposition VP demandée pour le</label><span class="required-input">*</span>
 								<div class="input-group">
 									<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-calendar-o"></i></span></div>
-									<input class="form-control form-control-sm" type="datetime" name="date_cv" required=""  placeholder="Date et heure" id="date_cv">
+									<input class="form-control form-control-sm" type="text" name="date_cv" required=""  placeholder="Date et heure" id="date_cv">
 								</div>
 							</div>
 							<div class="form-row">
@@ -284,7 +286,7 @@
 									<div class="form-group"><label for="dep_datetime_1"><span style="color:green">Date/Heure Départ</span></label>
 										<div class="input-group">
 											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-											<input class="form-control form-control-sm" type="datetime" name="dep_datetime_1" placeholder="Date/Heure Départ" id="dep_datetime_1">
+											<input class="form-control form-control-sm" type="text" name="dep_datetime_1" placeholder="Date/Heure Départ" id="dep_datetime_1">
 										</div>
 									</div>
 								</div>
@@ -292,7 +294,7 @@
 									<div class="form-group"><label for="arr_datetime_1"><span style="color:red">Date/Heure Arrivée</span></label>
 										<div class="input-group">
 											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-											<input class="form-control form-control-sm" type="datetime" name="arr_datetime_1" placeholder="Date/Heure Arrivée" id="arr_datetime_1">
+											<input class="form-control form-control-sm" type="text" name="arr_datetime_1" placeholder="Date/Heure Arrivée" id="arr_datetime_1">
 										</div>
 									</div>
 								</div>
@@ -331,7 +333,7 @@
 										<div class="form-group"><label for="dep_datetime_2"><span style="color:green">Date/Heure Départ</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_2" placeholder="Date/Heure Départ" id="dep_datetime_2">
+												<input class="form-control form-control-sm" type="text" name="dep_datetime_2" placeholder="Date/Heure Départ" id="dep_datetime_2">
 											</div>
 										</div>
 									</div>
@@ -339,7 +341,7 @@
 										<div class="form-group"><label for="arr_datetime_2"><span style="color:red">Date/Heure Arrivée</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_2" placeholder="Date/Heure Arrivée" id="arr_datetime_2">
+												<input class="form-control form-control-sm" type="text" name="arr_datetime_2" placeholder="Date/Heure Arrivée" id="arr_datetime_2">
 											</div>
 										</div>
 									</div>
@@ -379,7 +381,7 @@
 										<div class="form-group"><label for="dep_datetime_3"><span style="color:green">Date/Heure Départ</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_3" placeholder="Date/Heure Départ" id="dep_datetime_3">
+												<input class="form-control form-control-sm" type="text" name="dep_datetime_3" placeholder="Date/Heure Départ" id="dep_datetime_3">
 											</div>
 										</div>
 									</div>
@@ -387,7 +389,7 @@
 										<div class="form-group"><label for="arr_datetime_3"><span style="color:red">Date/Heure Arrivée</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_3" placeholder="Date/Heure Arrivée" id="arr_datetime_3">
+												<input class="form-control form-control-sm" type="text" name="arr_datetime_3" placeholder="Date/Heure Arrivée" id="arr_datetime_3">
 											</div>
 										</div>
 									</div>
@@ -427,7 +429,7 @@
 										<div class="form-group"><label for="dep_datetime_4"><span style="color:green">Date/Heure Départ</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_4" placeholder="Date/Heure Départ" id="dep_datetime_4">
+												<input class="form-control form-control-sm" type="text" name="dep_datetime_4" placeholder="Date/Heure Départ" id="dep_datetime_4">
 											</div>
 										</div>
 									</div>
@@ -435,7 +437,7 @@
 										<div class="form-group"><label for="arr_datetime_4"><span style="color:red">Date/Heure Arrivée</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_4" placeholder="Date/Heure Arrivée" id="arr_datetime_4">
+												<input class="form-control form-control-sm" type="text" name="arr_datetime_4" placeholder="Date/Heure Arrivée" id="arr_datetime_4">
 											</div>
 										</div>
 									</div>
@@ -475,7 +477,7 @@
 										<div class="form-group"><label for="dep_datetime_5"><span style="color:green">Date/Heure Départ</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="dep_datetime_5" placeholder="Date/Heure Départ" id="dep_datetime_5">
+												<input class="form-control form-control-sm" type="text" name="dep_datetime_5" placeholder="Date/Heure Départ" id="dep_datetime_5">
 											</div>
 										</div>
 									</div>
@@ -483,7 +485,7 @@
 										<div class="form-group"><label for="arr_datetime_5"><span style="color:red">Date/Heure Arrivée</span></label>
 											<div class="input-group">
 												<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-												<input class="form-control form-control-sm" type="datetime" name="arr_datetime_5" placeholder="Date/Heure Arrivée" id="arr_datetime_5">
+												<input class="form-control form-control-sm" type="text" name="arr_datetime_5" placeholder="Date/Heure Arrivée" id="arr_datetime_5">
 											</div>
 										</div>
 									</div>
@@ -537,7 +539,7 @@
 									<div class="form-group"><label for="vp_datetime_end">Départ effectif VP</label>
 										<div class="input-group">
 											<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></div>
-											<input class="form-control form-control-sm" type="datetime" name="vp_datetime_end" placeholder="Date/Heure Arrivée" id="vp_datetime_end">
+											<input class="form-control form-control-sm" type="text" name="vp_datetime_end" placeholder="Date/Heure Arrivée" id="vp_datetime_end">
 										</div>
 									</div>
 								</div>
@@ -662,7 +664,7 @@
 								<div class="form-row">
 									<div class="col-12">
 										<div class="static-map">
-											<a href="https://www.google.com/maps/place/452+Avenue+du+Prado,+13008+Marseille" target="_blank">
+											<a href="#" onClick="openSomeUrl('https://www.google.com/maps/place/452+Avenue+du+Prado,+13008+Marseille')">
 												<!-- <img class="img-responsive" src="http://maps.googleapis.com/maps/api/staticmap?autoscale=2&size=600x210&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid|color:0xff0000|label:|452+Avenue+du+Prado,+13008+Marseille&zoom=12&key=YOUR_API_KEY" alt="Google Map"> -->
 												<img class="img-responsive" src="http://www.boursoconvois.com/assets/img/staticmap.png" alt="Google Map">
 											</a>
@@ -737,6 +739,9 @@
 	</footer>
 	-->
     <script src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.ui.datepicker-fr.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/Contact-Form-v2-Modal--Full-with-Google-Map.js"></script>
     <script src="assets/js/smooth.scroll.anchor.js"></script>

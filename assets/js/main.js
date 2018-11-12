@@ -178,7 +178,7 @@ App = {
 			distanceFilter: 1000,
 			activityType: 'AutomotiveNavigation',
 			startForeground: true,
-			debug: true,
+			debug: false,
 			interval: 60000,
 			fastestInterval: 30000,
 			activitiesInterval: 30000,
@@ -251,6 +251,12 @@ App = {
 		}
 	},
 
+	function openSomeUrl(url)
+	{
+		//window.plugins.childBrowser.showWebPage('https://www.taximedia.fr/redir.php', { showLocationBar: true });
+		window.open(url,'_blank','location=false,enableViewportScale=yes,scrollbars=yes,closebuttoncaption=Fermer');
+	}
+	
 	logMeIn: function (myParentDiv) {
 		$(myParentDiv+' #sender').attr("disabled", true);
 		var credLogin = $(myParentDiv+' #login').val();
@@ -837,6 +843,103 @@ App = {
 				else
 					$('.go-up-fixed').fadeIn('slow');
 			}
+		});
+		// DateTime Picker...
+		$('#ui-datepicker-div').css("z-index", "100000");
+		$.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+		$.timepicker.regional['fr'] = {
+			timeOnlyTitle: '',
+			timeText: '&Agrave;',
+			hourText: 'Heure',
+			minuteText: 'Minute',
+			secondText: 'Seconde',
+			currentText: 'Maintenant',
+			closeText: 'Fermer'
+		};
+		$.timepicker.setDefaults($.timepicker.regional['fr']);
+		$("#date_cv").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#dep_datetime_1").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#arr_datetime_1").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#dep_datetime_2").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#arr_datetime_2").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#dep_datetime_3").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#arr_datetime_3").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#dep_datetime_4").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#arr_datetime_4").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#dep_datetime_5").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#arr_datetime_5").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
+		});
+		$("#vp_datetime_end").datetimepicker({
+			changeMonth: true,
+			changeYear: true,
+			altField: "",
+			timeFormat: "HH':'mm",
+			minDate: new Date()
 		});
 		/*
 		// Here we hide steps in formJobDocument...
