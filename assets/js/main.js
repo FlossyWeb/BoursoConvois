@@ -634,11 +634,10 @@ App = {
 		//$(myFormDiv+' #successfail').append('<div class="alert alert-success" role="alert"><b>Query : '+query+'</b></div>');
 		$.post(globals.serverAddress, query, function(data){
 			if(data.ok=="ok") {
-				returns = '<div class="alert alert-success" role="alert"><b>Votre demande de convoi a bien été modifiée.</b></div>';
-				App.getLeads('loadEvent', true);
+				returns = '<div class="alert alert-success" role="alert"><b>Le bon de transport à été sauvegardé.</b></div>';
 			}
 			else
-				returns = '<div class="alert alert-danger" role="alert"><b>Votre demande de convoi n\'a pas été modifiée suite à un problème technique.</b></div>';
+				returns = '<div class="alert alert-danger" role="alert"><b>Le bon de transport n\'a pas été sauvegardé suite à un problème technique.</b></div>';
 		}, "json").always(function(data){
 			$(myFormDiv+' #sender').attr("disabled", false);
 			$(myFormDiv+' #successfail').empty().append(returns);
