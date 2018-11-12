@@ -81,7 +81,7 @@ App = {
 		//if($.localStorage.getItem('registeredUser') != 1)
 		if((navigator.network.connection.type == Connection.NONE) || !window.jQuery){
 			//$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
-			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'Mon Appli Taxi', 'OK');
+			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
 		}
 		//openPdf = cordova.plugins.disusered.open;
 		/*
@@ -154,7 +154,7 @@ App = {
 		});
 		*/
 		BackgroundGeolocation.on('error', function(error) {
-			//if(app) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'Mon Appli Taxi', 'OK');
+			//if(app) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
 			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
 				backgroundGeolocation.showAppSettings();
@@ -220,7 +220,7 @@ App = {
 	// GESTION DES BOUTONS MATERIEL
 	// Bouton retour
 	onBackKeyDown: function() {
-		navigator.notification.alert("Veuillez ne pas quitter Mon Appli Taxi pendant la recheche de taxi disponibles", App.alertDismissed, 'Mon Appli Taxi', 'OK');
+		navigator.notification.alert("Veuillez ne pas quitter BoursoConvois pendant la recheche de taxi disponibles", App.alertDismissed, 'BoursoConvois', 'OK');
 	},
 	onResume: function() {
 		setTimeout(function() {
@@ -247,7 +247,7 @@ App = {
 			$('#'+pageToShow).fadeIn();
 		}
 		// Modifying return link...
-		$('#returnLink').attr('onclick', '').attr('onclick', 'App.changePage(\'#'+previousPage+'\', \'#'+pageToShow+'\')');
+		$('#returnLink').attr('onclick', '').attr('onclick', 'App.changePage(\''+previousPage+'\', \''+pageToShow+'\')');
 	},
 
 	openSomeUrl: function(url) {
@@ -416,7 +416,7 @@ App = {
 				$.sessionStorage.setItem('dep', dep);
 			}
 			else {
-				if(app) navigator.notification.alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.', App.alertDismissed, 'Mon Appli Taxi', 'OK');
+				if(app) navigator.notification.alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.', App.alertDismissed, 'BoursoConvois', 'OK');
 				else alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.');
 			}
 		}, "json").done(function() { 
@@ -469,7 +469,7 @@ App = {
 				App.getLocation(); // We got out of the loop so we get back in !
 				if(!geoFailedAlertOnce) {
 					geoFailedAlertOnce = true;
-					if(app) navigator.notification.alert(geoAlert, alertDismissed, 'Mon Appli Taxi', 'OK');
+					if(app) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
 					else alert(geoAlert);
 				}
 			},{enableHighAccuracy:false, maximumAge:10000, timeout: 60000});
@@ -477,7 +477,7 @@ App = {
 		else {
 			App.getLocation(); // We got out of the loop so we get back in !
 			//$( "#errorPop" ).popup( "open", { positionTo: "window" } );
-			if(app) navigator.notification.alert(geoAlert, alertDismissed, 'Mon Appli Taxi', 'OK');
+			if(app) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
 			else alert(geoAlert);
 		}
 	},
@@ -538,7 +538,7 @@ App = {
 			});
 		}
 		else {
-			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'Mon Appli Taxi', 'OK');
+			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'BoursoConvois', 'OK');
 			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
 		}
 	},
@@ -697,9 +697,31 @@ App = {
 				$('#fillJobDocument #vp_datetime_end').val(data.vp_datetime_end);
 				$('#fillJobDocument #obs_driver').val(data.obs_driver);
 				$('#fillJobDocument #obs_pilot').val(data.obs_pilot);
+				$('#fillJobDocument #getPdfCont').val('<button class="btn btn-danger btn-block" id="getPdfBtn" onclick="App.getPdf(\''+data.auto_ld+'\')"><i class="fa fa-hourglass-start"></i> Doc PDF</button>'');
 			}
 		}, "json");
 		App.changePage('jobDocPage', 'leadPage');
+	},
+
+	getPdf: function(auto_ld)
+	{
+		$('#getPdfBtn').attr("disabled", true);
+		let req = "modJobDocument";
+		query = query + "&id=" + globals.id + "&pwd=" + globals.pwd + "&req=" + req;
+		var returns = "";
+		//$(myFormDiv+' #successfail').append('<div class="alert alert-success" role="alert"><b>Query : '+query+'</b></div>');
+		$.post(globals.serverAddress, query, function(data){
+			if(data.ok=="ok") {
+				var open = cordova.plugins.disusered.open;
+				open(data.pdf, function() { console.log('Success');}, function() { console.log('Error');});
+				//window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer')
+			}
+			else
+				navigator.notification.alert('Le document ne peut être téléchargé pour le moment', App.alertDismissed, 'BoursoConvois', 'OK');
+		}, "json").always(function(data){
+			$('#getPdfBtn').attr("disabled", false);
+			$(myFormDiv+' #successfail').empty().append(returns);
+		});
 	},
 
 	fillAnswerLeads: function(auto_l, addr_l, addr_comp_l, dep_l, city_l, addr_dest_l, addr_dest_comp_l, dep_dest_l, city_dest_l, cat_l, num_arr_pref, name_l, tel_l, datedeb_l, datefin_l, long_l, large_l, height_l, weight_l, est_time, est_km, vp_av, vp_ar, guides, imat_tr, imat_sr, name_st)
