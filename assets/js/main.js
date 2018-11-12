@@ -697,7 +697,7 @@ App = {
 				$('#fillJobDocument #vp_datetime_end').val(data.vp_datetime_end);
 				$('#fillJobDocument #obs_driver').val(data.obs_driver);
 				$('#fillJobDocument #obs_pilot').val(data.obs_pilot);
-				$('#fillJobDocument #getPdfCont').val('<button class="btn btn-danger btn-block" id="getPdfBtn" onclick="App.getPdf(\''+data.auto_ld+'\')"><i class="fa fa-hourglass-start"></i> Doc PDF</button>');
+				$('#fillJobDocument #getPdfCont').empty().append('<button class="btn btn-danger btn-block" id="getPdfBtn" onclick="App.getPdf(\''+data.auto_ld+'\')"><i class="fa fa-file-pdf-o"></i> Doc PDF</button>');
 			}
 		}, "json");
 		App.changePage('jobDocPage', 'leadPage');
@@ -706,21 +706,24 @@ App = {
 	getPdf: function(auto_ld)
 	{
 		$('#getPdfBtn').attr("disabled", true);
-		let req = "modJobDocument";
-		query = query + "&id=" + globals.id + "&pwd=" + globals.pwd + "&req=" + req;
-		var returns = "";
+		let req = "getPdf";
+		let query = "&id=" + globals.id + "&pwd=" + globals.pwd + "&auto_ld=" + auto_ld + "&req=" + req;
 		//$(myFormDiv+' #successfail').append('<div class="alert alert-success" role="alert"><b>Query : '+query+'</b></div>');
 		$.post(globals.serverAddress, query, function(data){
 			if(data.ok=="ok") {
-				var open = cordova.plugins.disusered.open;
-				open(data.pdf, function() { console.log('Success');}, function() { console.log('Error');});
-				//window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer')
+				if(app) {
+					var open = cordova.plugins.disusered.open;
+					open(data.pdf, function() { console.log('Success');}, function() { console.log('Error');});
+					//window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
+				}
+				else {
+					window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
+				}
 			}
 			else
 				navigator.notification.alert('Le document ne peut être téléchargé pour le moment', App.alertDismissed, 'BoursoConvois', 'OK');
 		}, "json").always(function(data){
 			$('#getPdfBtn').attr("disabled", false);
-			$(myFormDiv+' #successfail').empty().append(returns);
 		});
 	},
 
