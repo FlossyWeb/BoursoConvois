@@ -99,6 +99,7 @@ App = {
 		// For iOS => backgroundtask
 		//backgroundtask.start(bgFunctionToRun);
 		// Efficient and batterie saving geolocation...
+		/* USING Plugin V3.X
 		BackgroundGeolocation.on('location', function(location) {
 			// handle your locations here
 			// to perform long running operation on iOS
@@ -121,6 +122,7 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
+		*/
 		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
@@ -154,6 +156,7 @@ App = {
 			console.log('[INFO] App needs to authorize the http requests');
 		});
 		*/
+		/*
 		BackgroundGeolocation.on('error', function(error) {
 			//if(app) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
@@ -197,8 +200,51 @@ App = {
 			//},
 			notificationIconColor: '#FEDD1E'
 		});
+		*/
+		// Using Plugin V2.X
+		var geoCallbackFn = function(location) {
+			//alert('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
+			// Do your HTTP request here to POST location to your server. 
+			// jQuery.post(url, JSON.stringify(location)); 
+			lat = location.latitude;
+			lng = location.longitude;
+			$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
+			$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
+				if(data.ok=="ok") {
+					returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
+				}
+				else
+					returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
+				$("#returnsGeoloc").append(returns);
+			});
+			//IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished, and the background-task may be completed. You must do this regardless if your HTTP request is successful or not. IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+			backgroundGeolocation.finish();
+		};
+		var geoFailureFn = function(error) {
+			//if(app) navigator.notification.alert('BackgroundGeolocation error', alertDismissed, 'Mon Appli Taxi', 'OK');
+			//else alert('BackgroundGeolocation error');
+			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
+				backgroundGeolocation.showAppSettings();
+			});
+		};
+		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
+		backgroundGeolocation.configure(geoCallbackFn, geoFailureFn, {
+			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+			desiredAccuracy: 100, // Or can be a number in meters
+			stationaryRadius: 1000,
+			distanceFilter: 1000,
+			activityType: 'AutomotiveNavigation',
+			startForeground: true,
+			debug: false,
+			interval: 60000,
+			fastestInterval: 30000,
+			activitiesInterval: 30000,
+			notificationTitle: 'BoursoConvois',
+			notificationText: 'Suivi de votre position',
+			notificationIconColor: '#FEDD1E'
+		});
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
-		BackgroundGeolocation.start();
+		backgroundGeolocation.start();
 		App.getLocation();
 		cordova.plugins.notification.local.clearAll(function() {
 			//alert("All notifications cleared");

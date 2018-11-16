@@ -47,7 +47,7 @@
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To attach a photo to your items/check-outs/reservations, we need access to your Photo Library." />
 	</plugin>
 	-->
-	<plugin name="cordova-plugin-geolocation" source="npm">
+	<plugin name="cordova-plugin-geolocation" source="npm" spec="2.4.3">
 		<variable name="GEOLOCATION_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEURS ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
     </plugin>
 	<plugin name="cordova-plugin-statusbar" source="npm" />
@@ -55,7 +55,7 @@
 	<plugin name="cordova-open" source="npm" spec="1.0.12" />
 	<plugin name="cordova-plugin-powermanagement" source="npm" />
 	<!-- <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.3" source="npm"> -->
-	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm">
+	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm" spec="2.3.6">
 		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEUR ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
 	</plugin>
 	<!-- 
