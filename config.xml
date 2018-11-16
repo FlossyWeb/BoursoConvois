@@ -41,12 +41,14 @@
 	<plugin name="cordova-plugin-splashscreen" source="npm" />
 	<plugin name="cordova-plugin-vibration" source="npm" />
 	<plugin name="cordova-plugin-inappbrowser" source="npm" />
+	<!--
 	<plugin name="cordova-plugin-camera" source="npm" >
         <variable name="CAMERA_USAGE_DESCRIPTION" value="CELA VOUS PERMETTRA DE SCANNER DES QR CODES." />  
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To attach a photo to your items/check-outs/reservations, we need access to your Photo Library." />
 	</plugin>
+	-->
 	<plugin name="cordova-plugin-geolocation" source="npm">
-		<variable name="GEOLOCATION_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TAXIS DE CONNAITRE VOTRE POSITION." />  
+		<variable name="GEOLOCATION_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEURS ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
     </plugin>
 	<plugin name="cordova-plugin-statusbar" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
@@ -54,7 +56,7 @@
 	<plugin name="cordova-plugin-powermanagement" source="npm" />
 	<!-- <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.3" source="npm"> -->
 	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm">
-		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEUR DE SUIVRE LA POSITION DE LEURS CONVOIS." />
+		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEUR ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
 	</plugin>
 	<!-- 
 	<plugin name="cordova-plugin-background-mode" source="npm" spec="0.7.2" />
@@ -80,19 +82,25 @@
 	<splash src="splash.png" />
 	
     <platform name="ios">
+		<edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
+			<string>CELA PERMETTRA AUX TRANSPORTEUR ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS.</string>
+		</edit-config>
+		<!-- 
 		<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
-			<string>CELA PERMETTRA AUX TAXIS DE CONNAITRE VOTRE POSITION.</string>
+			<string>CELA PERMETTRA AUX TRANSPORTEUR ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS.</string>
 		</edit-config>
 		<edit-config target="NSCalendarsUsageDescription" file="*-Info.plist" mode="merge">
 			<string>CELA VOUS PERMETTRA DE CREER DANS VOTRE CALENDRIER UN RENDEZ-VOUS AVEC LE TAXI.</string>
 		</edit-config>
-		<!-- 
         <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">    
             <string>CELA VOUS PERMETTRA DE SCANNER DES QR CODES.</string>    
         </edit-config>
         <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">  
             <string>To attach a photo to your items/check-outs/reservations, we need access to your Photo Library.</string>    
         </edit-config>
+		<config-file platform="ios" parent="NSLocationAlwaysUsageDescription" overwrite="true">
+			<string>CELA PERMETTRA AUX USAGERS DE CONNAITRE VOTRE POSITION.</string>
+		</config-file>
 		-->
 		
         <icon src="res/icon/ios/icon-1024.png" width="1024" height="1024"/>

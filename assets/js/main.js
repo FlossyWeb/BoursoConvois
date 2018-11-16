@@ -108,13 +108,14 @@ App = {
 				// eg. ajax post location
 				lat = location.latitude;
 				lng = location.longitude;
+				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
 				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
 					if(data.ok=="ok") {
 						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
 					}
 					else
 						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
-					$("#returns").empty().append();
+					$("#returnsGeoloc").append(returns);
 				});
 				// IMPORTANT: task has to be ended by endTask
 				BackgroundGeolocation.endTask(taskKey);
@@ -465,7 +466,7 @@ App = {
 		}
 		if (error.code == error.TIMEOUT) {
 			// Fall back to low accuracy and any cached position available...
-			navigator.geolocation.getCurrentPosition(get_coords, function(){
+			navigator.geolocation.getCurrentPosition(App.sendLatLng, function(){
 				App.getLocation(); // We got out of the loop so we get back in !
 				if(!geoFailedAlertOnce) {
 					geoFailedAlertOnce = true;
