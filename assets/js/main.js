@@ -720,8 +720,10 @@ App = {
 					window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
 				}
 			}
-			else
-				navigator.notification.alert('Le document ne peut être téléchargé pour le moment', App.alertDismissed, 'BoursoConvois', 'OK');
+			else {
+				if(app) navigator.notification.alert('Le document ne peut être téléchargé pour le moment !', App.alertDismissed, 'BoursoConvois', 'OK');
+				else alert('Le document ne peut être téléchargé pour le moment !');
+			}
 		}, "json").always(function(data){
 			$('#getPdfBtn').attr("disabled", false);
 		});
