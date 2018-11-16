@@ -1,4 +1,4 @@
-var globals, map, isMobile=false, app, lat, lng, previousLat=0, previousLng=0
+var globals, map, isMobile=false, app, lat, lng, previousLat=0, previousLng=0, openPdf,
 App = {
 
 	settings: {
@@ -83,7 +83,7 @@ App = {
 			//$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
 			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
 		}
-		//openPdf = cordova.plugins.disusered.open;
+		openPdf = cordova.plugins.disusered.open;
 		/*
 		// For Android => Enable background mode
 		cordova.plugins.backgroundMode.enable();
@@ -712,8 +712,7 @@ App = {
 		$.post(globals.serverAddress, query, function(data){
 			if(data.ok=="ok") {
 				if(app) {
-					var open = cordova.plugins.disusered.open;
-					open(data.pdf, function() { console.log('Success');}, function() { console.log('Error');});
+					openPdf(data.pdf, function() { console.log('Success');}, function() { console.log('Error');});
 					//window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
 				}
 				else {
