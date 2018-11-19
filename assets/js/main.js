@@ -755,7 +755,7 @@ App = {
 		//$(myFormDiv+' #successfail').append('<div class="alert alert-success" role="alert"><b>Query : '+query+'</b></div>');
 		$.post(globals.serverAddress, query, function(data){
 			if(data.ok=="ok") {
-				if(app) {
+				if(isApp) {
 					openPdf(data.pdf, function() { console.log('Success');}, function() { console.log('Error');});
 					//window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
 				}
@@ -764,7 +764,7 @@ App = {
 				}
 			}
 			else {
-				if(app) navigator.notification.alert('Le document ne peut être téléchargé pour le moment !', App.alertDismissed, 'BoursoConvois', 'OK');
+				if(isApp) navigator.notification.alert('Le document ne peut être téléchargé pour le moment !', App.alertDismissed, 'BoursoConvois', 'OK');
 				else alert('Le document ne peut être téléchargé pour le moment !');
 			}
 		}, "json").always(function(data){
@@ -814,7 +814,7 @@ App = {
 	},
 	
 	bindUIActions: function() {	
-		if(!app) App.getLocation();
+		if(!isApp) App.getLocation();
 		// Is it Mobile device
 		if(/Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)) isMobile = true;
 		if(isMobile) {
