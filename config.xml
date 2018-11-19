@@ -50,7 +50,9 @@
 		<variable name="GEOLOCATION_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEURS ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
     </plugin>
 	-->
-	<plugin spec="https://github.com/asangadev/cordova-plugin-geolocation" />
+	<plugin name="cordova-plugin-geolocation" source="npm">
+		<variable name="GEOLOCATION_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEURS ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
+    </plugin>
 	<plugin name="cordova-plugin-statusbar" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
 	<plugin name="cordova-open" source="npm" spec="1.0.12" />

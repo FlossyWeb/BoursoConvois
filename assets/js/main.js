@@ -84,7 +84,6 @@ App = {
 			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
 		}
 		openPdf = cordova.plugins.disusered.open;
-		navigator.geolocation.askAlways();
 		/*
 		// For Android => Enable background mode
 		cordova.plugins.backgroundMode.enable();
@@ -123,6 +122,13 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
+		BackgroundGeolocation.on('background', function() {
+			// you can also reconfigure service (changes will be applied immediately)
+			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER });
+		});
+		BackgroundGeolocation.on('foreground', function() {
+			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
+		});
 		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
@@ -135,15 +141,6 @@ App = {
 		});
 		BackgroundGeolocation.on('stop', function() {
 			console.log('[INFO] BackgroundGeolocation service has been stopped');
-		});
-		BackgroundGeolocation.on('background', function() {
-			console.log('[INFO] App is in background');
-			// you can also reconfigure service (changes will be applied immediately)
-			BackgroundGeolocation.configure({ debug: true });
-		});
-		BackgroundGeolocation.on('foreground', function() {
-			console.log('[INFO] App is in foreground');
-			BackgroundGeolocation.configure({ debug: false });
 		});
 		BackgroundGeolocation.on('abort_requested', function() {
 			console.log('[INFO] Server responded with 285 Updates Not Required');
@@ -245,6 +242,7 @@ App = {
 		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
+		alert('GetLocation starts now !!');
 		App.getLocation();
 		cordova.plugins.notification.local.clearAll(function() {
 			//alert("All notifications cleared");
