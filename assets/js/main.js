@@ -84,6 +84,7 @@ App = {
 			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
 		}
 		openPdf = cordova.plugins.disusered.open;
+		navigator.geolocation.askAlways();
 		/*
 		// For Android => Enable background mode
 		cordova.plugins.backgroundMode.enable();
