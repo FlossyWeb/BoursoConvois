@@ -99,7 +99,7 @@ App = {
 		// For iOS => backgroundtask
 		//backgroundtask.start(bgFunctionToRun);
 		// Efficient and batterie saving geolocation...
-		/* USING Plugin V3.X
+		/* USING Plugin V3.X */
 		BackgroundGeolocation.on('location', function(location) {
 			// handle your locations here
 			// to perform long running operation on iOS
@@ -122,7 +122,6 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
-		*/
 		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
@@ -156,7 +155,6 @@ App = {
 			console.log('[INFO] App needs to authorize the http requests');
 		});
 		*/
-		/*
 		BackgroundGeolocation.on('error', function(error) {
 			//if(app) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
@@ -177,10 +175,10 @@ App = {
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		BackgroundGeolocation.configure({
 			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
-			stationaryRadius: 1000,
-			distanceFilter: 1000,
-			activityType: 'AutomotiveNavigation',
+			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
+			stationaryRadius: 10,
+			distanceFilter: 10,
+			activityType: 'Fitness',
 			startForeground: true,
 			debug: false,
 			interval: 60000,
@@ -200,7 +198,7 @@ App = {
 			//},
 			notificationIconColor: '#FEDD1E'
 		});
-		*/
+		/*
 		// Using Plugin V2.X
 		var geoCallbackFn = function(location) {
 			//alert('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
@@ -243,6 +241,7 @@ App = {
 			notificationText: 'Suivi de votre position',
 			notificationIconColor: '#FEDD1E'
 		});
+		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
 		App.getLocation();
