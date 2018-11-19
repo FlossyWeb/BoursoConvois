@@ -1,4 +1,4 @@
-var globals, map, isMobile=false, app, lat, lng, previousLat=0, previousLng=0, openPdf,
+var globals, map, isMobile=false, isApp, lat, lng, previousLat=0, previousLng=0, openPdf,
 App = {
 
 	settings: {
@@ -60,8 +60,8 @@ App = {
 		this.bindUIActions();
 		//$("#now-date").append(globals.year);
 		// Checks App or Browser
-		app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
-		if ( app ) {
+		isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
+		if ( isApp ) {
 			// PhoneGap application
 			// Attendre que PhoneGap soit prêt	    //
 			document.addEventListener("deviceready", App.onDeviceReady, false);
@@ -154,7 +154,7 @@ App = {
 		});
 		*/
 		BackgroundGeolocation.on('error', function(error) {
-			//if(app) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
+			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
 			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
 				backgroundGeolocation.showAppSettings();
@@ -217,7 +217,7 @@ App = {
 			backgroundGeolocation.finish();
 		};
 		var geoFailureFn = function(error) {
-			//if(app) navigator.notification.alert('BackgroundGeolocation error', alertDismissed, 'Mon Appli Taxi', 'OK');
+			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', alertDismissed, 'Mon Appli Taxi', 'OK');
 			//else alert('BackgroundGeolocation error');
 			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
 				backgroundGeolocation.showAppSettings();
@@ -242,7 +242,6 @@ App = {
 		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
-		alert('GetLocation starts now !!');
 		App.getLocation();
 		cordova.plugins.notification.local.clearAll(function() {
 			//alert("All notifications cleared");
@@ -328,7 +327,7 @@ App = {
 				}, 100);
 			}
 			else {
-				if(app) navigator.notification.alert("Identifiant ou mot de passe erroné !", App.alertDismissed, 'BoursoConvois', 'OK');
+				if(isApp) navigator.notification.alert("Identifiant ou mot de passe erroné !", App.alertDismissed, 'BoursoConvois', 'OK');
 				else alert("Identifiant ou mot de passe erroné !");
 			}
 		}, "json").always(function() {
@@ -461,7 +460,7 @@ App = {
 				$.sessionStorage.setItem('dep', dep);
 			}
 			else {
-				if(app) navigator.notification.alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.', App.alertDismissed, 'BoursoConvois', 'OK');
+				if(isApp) navigator.notification.alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.', App.alertDismissed, 'BoursoConvois', 'OK');
 				else alert('Adresse inconnue !! Veuillez la saisir manuellement SVP.');
 			}
 		}, "json").done(function() { 
@@ -514,7 +513,7 @@ App = {
 				App.getLocation(); // We got out of the loop so we get back in !
 				if(!geoFailedAlertOnce) {
 					geoFailedAlertOnce = true;
-					if(app) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
+					if(isApp) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
 					else alert(geoAlert);
 				}
 			},{enableHighAccuracy:false, maximumAge:10000, timeout: 60000});
@@ -522,7 +521,7 @@ App = {
 		else {
 			App.getLocation(); // We got out of the loop so we get back in !
 			//$( "#errorPop" ).popup( "open", { positionTo: "window" } );
-			if(app) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
+			if(isApp) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
 			else alert(geoAlert);
 		}
 	},
@@ -583,7 +582,7 @@ App = {
 			});
 		}
 		else {
-			if(app) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'BoursoConvois', 'OK');
+			if(isApp) navigator.notification.alert("Vous devez renseigner les adresses de départ et d'arrivée.", App.alertDismissed, 'BoursoConvois', 'OK');
 			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
 		}
 	},
