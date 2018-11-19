@@ -58,7 +58,7 @@
 	<plugin name="cordova-open" source="npm" spec="1.0.12" />
 	<plugin name="cordova-plugin-powermanagement" source="npm" />
 	<!-- <plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.3.6" source="npm"> -->
-	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm" />
+	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm">
 		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TRANSPORTEUR ET AUX SOCIETES PILOTES DE SUIVRE LA POSITION DE LEURS CONVOIS." />
 	</plugin>
 	<!-- 
