@@ -100,6 +100,32 @@ App = {
 		//backgroundtask.start(bgFunctionToRun);
 		// Efficient and batterie saving geolocation...
 		/* USING Plugin V3.X */
+		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
+		BackgroundGeolocation.configure({
+			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
+			stationaryRadius: 10,
+			distanceFilter: 10,
+			activityType: 'Fitness',
+			startForeground: true,
+			debug: false,
+			interval: 60000,
+			fastestInterval: 30000,
+			activitiesInterval: 30000,
+			notificationTitle: 'BoursoConvois',
+			notificationText: 'Suivi de votre position',
+			//url: globals.serverAddress,
+			//httpHeaders: {
+			//  'X-FOO': 'bar'
+			//},
+			// customize post properties
+			//postTemplate: {
+			//  lat: '@latitude',
+			//  lng: '@longitude',
+			//  foo: 'bar' // you can also add your own properties
+			//},
+			notificationIconColor: '#FEDD1E'
+		});
 		BackgroundGeolocation.on('location', function(location) {
 			// handle your locations here
 			// to perform long running operation on iOS
@@ -124,7 +150,7 @@ App = {
 		});
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
-			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER });
+			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
 		});
 		BackgroundGeolocation.on('foreground', function() {
 			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
@@ -169,32 +195,6 @@ App = {
 					});
 				}, 1000);
 			}
-		});
-		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
-		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
-			stationaryRadius: 10,
-			distanceFilter: 10,
-			activityType: 'Fitness',
-			startForeground: true,
-			debug: false,
-			interval: 60000,
-			fastestInterval: 30000,
-			activitiesInterval: 30000,
-			notificationTitle: 'BoursoConvois',
-			notificationText: 'Suivi de votre position',
-			//url: globals.serverAddress,
-			//httpHeaders: {
-			//  'X-FOO': 'bar'
-			//},
-			// customize post properties
-			//postTemplate: {
-			//  lat: '@latitude',
-			//  lng: '@longitude',
-			//  foo: 'bar' // you can also add your own properties
-			//},
-			notificationIconColor: '#FEDD1E'
 		});
 		/*
 		// Using Plugin V2.X
@@ -242,7 +242,7 @@ App = {
 		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
-		App.getLocation();
+		//App.getLocation();
 		cordova.plugins.notification.local.clearAll(function() {
 			//alert("All notifications cleared");
 		}, this);
