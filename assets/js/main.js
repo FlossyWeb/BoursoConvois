@@ -70,12 +70,13 @@ App = {
 		StatusBar.overlaysWebView(false);
 		StatusBar.backgroundColorByHexString("#E7B242");
 		// prevent device from sleeping
-		window.powermanagement.acquire();
-		//if($.localStorage.getItem('registeredUser') != 1)
+		//window.powermanagement.acquire();
+		/*
 		if((navigator.network.connection.type == Connection.NONE) || !window.jQuery){
 			//$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
 			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
 		}
+		*/
 		openPdf = cordova.plugins.disusered.open;
 		/*
 		// For Android => Enable background mode
@@ -236,10 +237,9 @@ App = {
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
 		//App.getLocation();
-		cordova.plugins.notification.local.clearAll(function() {
-			//alert("All notifications cleared");
-		}, this);
 		/*
+		cordova.plugins.notification.local.clearAll(function() {
+		}, this);
 		var assosPop = window.open('http://taximedia.fr/assos/','_blank','location=false,enableViewportScale=yes,scrollbars=no,closebuttoncaption=Fermer');
 		setTimeout(function() {
 			assosPop.close();
@@ -1092,134 +1092,7 @@ App = {
 	if (document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
 		// PhoneGap application
 		// Attendre que PhoneGap soit prêt	    //
-		document.addEventListener("deviceready", onDeviceReady, false);
-	}
-	function onDeviceReady() {
-		// PhoneGap est prêt
-		StatusBar.overlaysWebView(false);
-		StatusBar.backgroundColorByHexString("#E7B242");
-		// prevent device from sleeping
-		window.powermanagement.acquire();
-		if((navigator.network.connection.type == Connection.NONE) || !window.jQuery){
-			//$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
-			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
-		}
-		openPdf = cordova.plugins.disusered.open;
-		/*
-		// For Android => Enable background mode
-		cordova.plugins.backgroundMode.enable();
-		cordova.plugins.backgroundMode.setDefaults({
-			title:  'App toujours en fonction (3 MINUTES MAX)',
-			ticker: 'App toujours en fonction (3 MINUTES MAX)',
-			text:   'Nous vous informons des courses en cours...'
-		});
-		//cordova.plugins.backgroundMode.configure({
-		//	title:'App toujours en fonction (3 MINUTES MAX), nous vous informons des courses en cours...'
-		//});
-		*/
-		// For iOS => backgroundtask
-		//backgroundtask.start(bgFunctionToRun);
-		// Efficient and batterie saving geolocation...
-		/* USING Plugin V3.X */
-		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
-		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
-			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
-			stationaryRadius: 10,
-			distanceFilter: 10,
-			activityType: 'Fitness',
-			startForeground: true,
-			debug: true,
-			interval: 60000,
-			fastestInterval: 30000,
-			activitiesInterval: 30000,
-			notificationTitle: 'BoursoConvois',
-			notificationText: 'Suivi de votre position',
-			//url: globals.serverAddress,
-			//httpHeaders: {
-			//  'X-FOO': 'bar'
-			//},
-			// customize post properties
-			//postTemplate: {
-			//  lat: '@latitude',
-			//  lng: '@longitude',
-			//  foo: 'bar' // you can also add your own properties
-			//},
-			notificationIconColor: '#FEDD1E'
-		});
-		BackgroundGeolocation.on('location', function(location) {
-			// handle your locations here
-			// to perform long running operation on iOS
-			// you need to create background task
-			BackgroundGeolocation.startTask(function(taskKey) {
-				// execute long running task
-				// eg. ajax post location
-				lat = location.latitude;
-				lng = location.longitude;
-				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
-				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
-					if(data.ok=="ok") {
-						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
-					}
-					else
-						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
-					$("#returnsGeoloc").append(returns);
-				});
-				// IMPORTANT: task has to be ended by endTask
-				BackgroundGeolocation.endTask(taskKey);
-			});
-		});
-		BackgroundGeolocation.on('background', function() {
-			// you can also reconfigure service (changes will be applied immediately)
-			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
-		});
-		BackgroundGeolocation.on('foreground', function() {
-			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
-		});
-		/*
-		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
-			// handle stationary locations here
-		});
-		BackgroundGeolocation.on('error', function(error) {
-			console.log('[ERROR] BackgroundGeolocation error:', error.code, error.message);
-		});
-		BackgroundGeolocation.on('start', function() {
-			console.log('[INFO] BackgroundGeolocation service has been started');
-		});
-		BackgroundGeolocation.on('stop', function() {
-			console.log('[INFO] BackgroundGeolocation service has been stopped');
-		});
-		BackgroundGeolocation.on('abort_requested', function() {
-			console.log('[INFO] Server responded with 285 Updates Not Required');
-			// Here we can decide whether we want stop the updates or not.
-			// If you've configured the server to return 285, then it means the server does not require further update.
-			// So the normal thing to do here would be to `BackgroundGeolocation.stop()`.
-			// But you might be counting on it to receive location updates in the UI, so you could just reconfigure and set `url` to null.
-		});
-		BackgroundGeolocation.on('http_authorization', () => {
-			console.log('[INFO] App needs to authorize the http requests');
-		});
-		*/
-		BackgroundGeolocation.on('error', function(error) {
-			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
-			//else alert('BackgroundGeolocation error');
-			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
-				backgroundGeolocation.showAppSettings();
-			});
-		});
-		BackgroundGeolocation.on('authorization', function(status) {
-			if (status !== BackgroundGeolocation.AUTHORIZED) {
-				// we need to set delay or otherwise alert may not be shown
-				setTimeout(function() {
-					navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
-						backgroundGeolocation.showAppSettings();
-					});
-				}, 1000);
-			}
-		});
-		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
-		backgroundGeolocation.start();
-		//App.getLocation();
+		document.addEventListener("deviceready", App.onDeviceReady(), false);
 	}
 
 })();
