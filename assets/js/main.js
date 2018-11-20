@@ -70,7 +70,7 @@ App = {
 		StatusBar.overlaysWebView(false);
 		StatusBar.backgroundColorByHexString("#E7B242");
 		// prevent device from sleeping
-		//window.powermanagement.acquire();
+		window.powermanagement.acquire();
 		/*
 		if((navigator.network.connection.type == Connection.NONE) || !window.jQuery){
 			//$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
@@ -96,28 +96,18 @@ App = {
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
+			locationProvider: BackgroundGeolocation.RAW_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
 			startForeground: true,
-			debug: true,
+			debug: false,
 			interval: 60000,
 			fastestInterval: 30000,
 			activitiesInterval: 30000,
 			notificationTitle: 'BoursoConvois',
 			notificationText: 'Suivi de votre position',
-			//url: globals.serverAddress,
-			//httpHeaders: {
-			//  'X-FOO': 'bar'
-			//},
-			// customize post properties
-			//postTemplate: {
-			//  lat: '@latitude',
-			//  lng: '@longitude',
-			//  foo: 'bar' // you can also add your own properties
-			//},
 			notificationIconColor: '#FEDD1E'
 		});
 		BackgroundGeolocation.on('location', function(location) {
@@ -142,6 +132,7 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
+		/*
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
 			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
@@ -149,7 +140,6 @@ App = {
 		BackgroundGeolocation.on('foreground', function() {
 			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
 		});
-		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
 		});
