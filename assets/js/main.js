@@ -807,16 +807,7 @@ App = {
 	
 	bindUIActions: function() {
 		// Checks App or Browser
-		isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
-		if ( isApp ) {
-			// PhoneGap application
-			// Attendre que PhoneGap soit prêt	    //
-			document.addEventListener("deviceready", App.onDeviceReady, false);
-			//alert("isApp");
-		}
-		else {
-			if(!isApp) App.getLocation();	
-		}		
+		if(!isApp) App.getLocation();	
 		// Is it Mobile device
 		if(/Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)) isMobile = true;
 		if(isMobile) {
@@ -1096,5 +1087,12 @@ App = {
 (function() {
 	
 	App.init();
+	isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
+	if ( isApp ) {
+		// PhoneGap application
+		// Attendre que PhoneGap soit prêt	    //
+		document.addEventListener("deviceready", App.onDeviceReady, false);
+		//alert("isApp");
+	}
 
 })();
