@@ -1092,7 +1092,7 @@ App = {
 	if (document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
 		// PhoneGap application
 		// Attendre que PhoneGap soit prêt	    //
-		document.addEventListener("deviceready", App.onDeviceReady(), false);
+		document.addEventListener("deviceready", App.onDeviceReady, false);
 	}
 
 })();
