@@ -812,7 +812,7 @@ App = {
 			// PhoneGap application
 			// Attendre que PhoneGap soit prêt	    //
 			document.addEventListener("deviceready", App.onDeviceReady, false);
-			alert("isApp");
+			//alert("isApp");
 		}
 		else {
 			if(!isApp) App.getLocation();	
