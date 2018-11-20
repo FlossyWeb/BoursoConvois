@@ -2,8 +2,8 @@ var isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'h
 if ( isApp ) {
 	// PhoneGap application
 	// Attendre que PhoneGap soit prêt	    //
-	document.addEventListener("deviceready", App.onDeviceReady, false);
-	//alert("isApp");
+	//document.addEventListener("deviceready", App.onDeviceReady, false);
+	document.addEventListener("deviceready", onDeviceReady, false);
 }
 function onDeviceReady() {
 	// PhoneGap est prêt
