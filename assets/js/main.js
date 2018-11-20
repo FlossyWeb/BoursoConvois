@@ -58,14 +58,6 @@ App = {
 		// kick things off
 		globals = this.settings;
 		this.bindUIActions();
-		//$("#now-date").append(globals.year);
-		// Checks App or Browser
-		isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
-		if ( isApp ) {
-			// PhoneGap application
-			// Attendre que PhoneGap soit prêt	    //
-			document.addEventListener("deviceready", App.onDeviceReady, false);
-		}
 	},
 
 	onDeviceReady: function() {
@@ -102,13 +94,13 @@ App = {
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+			locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
 			startForeground: true,
-			debug: false,
+			debug: true,
 			interval: 60000,
 			fastestInterval: 30000,
 			activitiesInterval: 30000,
@@ -150,10 +142,10 @@ App = {
 		});
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
-			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
+			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
 		});
 		BackgroundGeolocation.on('foreground', function() {
-			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
+			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
 		});
 		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
@@ -813,8 +805,18 @@ App = {
 		}
 	},
 	
-	bindUIActions: function() {	
-		if(!isApp) App.getLocation();
+	bindUIActions: function() {
+		// Checks App or Browser
+		isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
+		if ( isApp ) {
+			// PhoneGap application
+			// Attendre que PhoneGap soit prêt	    //
+			document.addEventListener("deviceready", App.onDeviceReady, false);
+			alert("isApp");
+		}
+		else {
+			if(!isApp) App.getLocation();	
+		}		
 		// Is it Mobile device
 		if(/Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)) isMobile = true;
 		if(isMobile) {
