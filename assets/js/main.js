@@ -57,8 +57,14 @@ App = {
 	init: function() {
 		// kick things off
 		globals = this.settings;
-		isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7;
 		this.bindUIActions();
+		if(document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
+			// PhoneGap application
+			// Attendre que PhoneGap soit prêt	    //
+			document.addEventListener("deviceready", App.onDeviceReady, false);
+			isApp = true;
+		}
+		else isApp = false;
 	},
 	
 	onDeviceReady: function() {
@@ -126,7 +132,7 @@ App = {
 					}
 					else
 						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
-					//$("#returnsGeoloc").append(returns);
+					$("#returnsGeoloc").append(returns);
 				}, "json");
 				// IMPORTANT: task has to be ended by endTask
 				BackgroundGeolocation.endTask(taskKey);
@@ -1079,10 +1085,5 @@ App = {
 (function() {
 	
 	App.init();
-	if (document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
-		// PhoneGap application
-		// Attendre que PhoneGap soit prêt	    //
-		document.addEventListener("deviceready", App.onDeviceReady, false);
-	}
 
 })();
