@@ -96,7 +96,7 @@ App = {
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.RAW_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
+			locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
@@ -126,8 +126,8 @@ App = {
 					}
 					else
 						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
-					$("#returnsGeoloc").append(returns);
-				});
+					//$("#returnsGeoloc").append(returns);
+				}, "json");
 				// IMPORTANT: task has to be ended by endTask
 				BackgroundGeolocation.endTask(taskKey);
 			});
@@ -196,7 +196,7 @@ App = {
 				else
 					returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
 				$("#returnsGeoloc").append(returns);
-			});
+			}, "json");
 			//IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished, and the background-task may be completed. You must do this regardless if your HTTP request is successful or not. IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
 			backgroundGeolocation.finish();
 		};
