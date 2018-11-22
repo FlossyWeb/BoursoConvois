@@ -126,6 +126,7 @@ App = {
 				lat = location.latitude;
 				lng = location.longitude;
 				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
+				var returns = "";
 				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
 					if(data.ok=="ok") {
 						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
