@@ -102,16 +102,19 @@ App = {
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
+			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
 			startForeground: true,
 			debug: false,
-			interval: 60000,
-			fastestInterval: 30000,
-			activitiesInterval: 30000,
+			interval: 10000,
+			fastestInterval: 5000,
+			activitiesInterval: 10000,
+			saveBatteryOnBackground : false,
+			stopOnStillActivity : false,
+			stopOnTerminate : false,
 			notificationTitle: 'BoursoConvois',
 			notificationText: 'Suivi de votre position',
 			notificationIconColor: '#FEDD1E'
@@ -126,27 +129,29 @@ App = {
 				lat = location.latitude;
 				lng = location.longitude;
 				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
-				var returns = "";
 				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
+					/*
+					var returns = "";
 					if(data.ok=="ok") {
 						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
 					}
 					else
 						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
 					$("#returnsGeoloc").append(returns);
+					*/
 				}, "json");
 				// IMPORTANT: task has to be ended by endTask
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
-		/*
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
-			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
+			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
 		});
 		BackgroundGeolocation.on('foreground', function() {
-			//BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
+			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
 		});
+		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
 		});
