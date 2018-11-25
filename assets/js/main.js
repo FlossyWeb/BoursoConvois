@@ -104,6 +104,7 @@ App = {
 		// Efficient and batterie saving geolocation...
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
+		/*
 		BackgroundGeolocation.configure({
 			locationProvider: BackgroundGeolocation.RAW_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
@@ -140,7 +141,6 @@ App = {
 				// eg. ajax post location
 				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
 				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
-					/*
 					var returns = "";
 					if(data.ok=="ok") {
 						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
@@ -148,13 +148,11 @@ App = {
 					else
 						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
 					$("#returnsGeoloc").append(returns);
-					*/
 				}, "json");
 				// IMPORTANT: task has to be ended by endTask
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
-		/*
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
 			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
@@ -184,7 +182,6 @@ App = {
 		BackgroundGeolocation.on('http_authorization', () => {
 			console.log('[INFO] App needs to authorize the http requests');
 		});
-		*/
 		BackgroundGeolocation.on('error', function(error) {
 			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
@@ -247,7 +244,7 @@ App = {
 		});
 		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
-		backgroundGeolocation.start();
+		//backgroundGeolocation.start();
 		App.getLocation();
 		/*
 		cordova.plugins.notification.local.clearAll(function() {
@@ -399,36 +396,18 @@ App = {
 		$(myFormDiv).addClass('was-validated');
 	},
 	
-	getLocation: function(myEvent) {
-		switch(myEvent) 
+	getLocation: function() {
+		if (navigator.geolocation)
 		{
-			case "Map":
-				if (navigator.geolocation)
-				{
-					if (navigator.userAgent.toLowerCase().match(/android/)) {
-						navigator.geolocation.getCurrentPosition(App.codeLatLng, App.showError,{enableHighAccuracy:false, maximumAge:0, timeout: 9000});
-					}
-					else {
-						navigator.geolocation.getCurrentPosition(App.codeLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 9000});
-					}
-				}
-				else {
-					alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connexion ainsi que la disponibilité des services de localisation dans les réglages de votre appareil.");
-				}
-			  break;
-			default:
-				if (navigator.geolocation)
-				{
-					if (navigator.userAgent.toLowerCase().match(/android/)) {
-						navigator.geolocation.getCurrentPosition(App.sendLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 30000});
-					}
-					else {
-						navigator.geolocation.getCurrentPosition(App.sendLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 10000});
-					}
-				}
-				else {
-					alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connexion ainsi que la disponibilité des services de localisation dans les réglages de votre appareil.");
-				}
+			if (navigator.userAgent.toLowerCase().match(/android/)) {
+				navigator.geolocation.getCurrentPosition(App.sendLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 30000});
+			}
+			else {
+				navigator.geolocation.getCurrentPosition(App.sendLatLng, App.showError,{enableHighAccuracy:true, maximumAge:0, timeout: 10000});
+			}
+		}
+		else {
+			alert("Localisation impossible, veuillez v&eacute;rifier l'&eacute;tat de votre connexion ainsi que la disponibilité des services de localisation dans les réglages de votre appareil.");
 		}
 	},
 
