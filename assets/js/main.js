@@ -104,12 +104,11 @@ App = {
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
+			locationProvider: BackgroundGeolocation.RAW_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
-			startForeground: true,
 			debug: true,
 			interval: 10000,
 			fastestInterval: 5000,
@@ -117,8 +116,6 @@ App = {
 			saveBatteryOnBackground : false,
 			stopOnStillActivity : false,
 			stopOnTerminate : false,
-			notificationTitle: 'BoursoConvois',
-			notificationText: 'Suivi de votre position',
 			//url: globals.serverAddress,
 			//httpHeaders: {
 			//  'X-FOO': 'bar'
@@ -129,6 +126,9 @@ App = {
 			//  lng: '@longitude',
 			//  foo: 'bar' // you can also add your own properties
 			//},
+			startForeground: true,
+			notificationTitle: 'BoursoConvois',
+			notificationText: 'Suivi de votre position',
 			notificationIconColor: '#FEDD1E'
 		});
 		BackgroundGeolocation.on('location', function(location) {
@@ -156,6 +156,7 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
+		/*
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
 			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
@@ -163,7 +164,6 @@ App = {
 		BackgroundGeolocation.on('foreground', function() {
 			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
 		});
-		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
 		});
@@ -250,7 +250,7 @@ App = {
 		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
-		//App.getLocation();
+		App.getLocation();
 		/*
 		cordova.plugins.notification.local.clearAll(function() {
 		}, this);
@@ -435,8 +435,8 @@ App = {
 	},
 
 	codeLatLng: function(position) {
-		let lat = parseFloat(position.coords.latitude);
-		let lng = parseFloat(position.coords.longitude);
+		lat = parseFloat(position.coords.latitude);
+		lng = parseFloat(position.coords.longitude);
 		let latlng = [lat, lng];
 		//alert(latlng);
 		globals.defLatLng = latlng;
@@ -824,7 +824,6 @@ App = {
 		//alert( isApp );
 		// Checks App or Browser
 		if(!isApp) {
-			alert("isApp: "+isApp);
 			App.getLocation();
 		}
 		// Is it Mobile device
