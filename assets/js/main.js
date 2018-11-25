@@ -86,6 +86,7 @@ App = {
 			navigator.notification.alert('Cette application a besoin d\'une connexion internet afin de mieux fonctionner', App.alertDismissed, 'BoursoConvois', 'OK');
 		}
 		*/
+		App.getLocation();
 		openPdf = cordova.plugins.disusered.open;
 		/*
 		// For Android => Enable background mode
@@ -104,10 +105,10 @@ App = {
 		// Efficient and batterie saving geolocation...
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
-		/*
+		// ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.RAW_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
-			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
+			locationProvider: BackgroundGeolocation.RAW_PROVIDER, 
+			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
@@ -139,8 +140,9 @@ App = {
 			BackgroundGeolocation.startTask(function(taskKey) {
 				// execute long running task
 				// eg. ajax post location
-				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
+				//$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
 				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
+					/*
 					var returns = "";
 					if(data.ok=="ok") {
 						returns = '<div class="alert alert-success" role="alert"><b>Géolocalisation effectuée.</b></div>';
@@ -148,6 +150,7 @@ App = {
 					else
 						returns = '<div class="alert alert-danger" role="alert"><b>Géolocalisation effectuée mais erreur serveur.</b></div>';
 					$("#returnsGeoloc").append(returns);
+					*/
 				}, "json");
 				// IMPORTANT: task has to be ended by endTask
 				BackgroundGeolocation.endTask(taskKey);
@@ -244,8 +247,7 @@ App = {
 		});
 		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
-		//backgroundGeolocation.start();
-		App.getLocation();
+		backgroundGeolocation.start();
 		/*
 		cordova.plugins.notification.local.clearAll(function() {
 		}, this);
