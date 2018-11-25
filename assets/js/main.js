@@ -101,6 +101,7 @@ App = {
 		// Efficient and batterie saving geolocation...
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
+		/*
 		BackgroundGeolocation.configure({
 			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
@@ -119,6 +120,7 @@ App = {
 			notificationText: 'Suivi de votre position',
 			notificationIconColor: '#FEDD1E'
 		});
+		*/
 		BackgroundGeolocation.on('location', function(location) {
 			// handle your locations here
 			// to perform long running operation on iOS
@@ -191,6 +193,31 @@ App = {
 					});
 				}, 1000);
 			}
+		});
+		BackgroundGeolocation.configure({
+			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
+			stationaryRadius: 1000,
+			distanceFilter: 1000,
+			activityType: 'AutomotiveNavigation',
+			startForeground: true,
+			debug: true,
+			interval: 60000,
+			fastestInterval: 30000,
+			activitiesInterval: 30000,
+			notificationTitle: 'BoursoConvois',
+			notificationText: 'Suivi de votre position',
+			//url: globals.serverAddress,
+			//httpHeaders: {
+			//  'X-FOO': 'bar'
+			//},
+			// customize post properties
+			//postTemplate: {
+			//  lat: '@latitude',
+			//  lng: '@longitude',
+			//  foo: 'bar' // you can also add your own properties
+			//},
+			notificationIconColor: '#FEDD1E'
 		});
 		/*
 		// Using Plugin V2.X
