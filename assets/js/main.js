@@ -109,14 +109,11 @@ App = {
 			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
-			activityType: "Fitness",
+			activityType: 'Fitness',
 			debug: true,
 			interval: 10000,
 			fastestInterval: 5000,
 			activitiesInterval: 10000,
-			saveBatteryOnBackground : false,
-			stopOnStillActivity : false,
-			stopOnTerminate : false,
 			//url: globals.serverAddress,
 			//httpHeaders: {
 			//  'X-FOO': 'bar'
@@ -136,11 +133,11 @@ App = {
 			// handle your locations here
 			// to perform long running operation on iOS
 			// you need to create background task
+			lat = location.latitude;
+			lng = location.longitude;
 			BackgroundGeolocation.startTask(function(taskKey) {
 				// execute long running task
 				// eg. ajax post location
-				lat = location.latitude;
-				lng = location.longitude;
 				$("#returnsGeoloc").append("geoloc launch:"+lat+", "+lng);
 				$.post(globals.serverAddress, {id: globals.id, lead: globals.lead, pwd: globals.pwd, lat: lat, lng: lng, req: 'updateGeolocation'}, function(data){
 					/*
