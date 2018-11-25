@@ -57,14 +57,16 @@ App = {
 	init: function() {
 		// kick things off
 		globals = this.settings;
-		this.bindUIActions();
 		if(document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
 			isApp = true;
 			// PhoneGap application
 			// Attendre que PhoneGap soit prêt	    //
 			document.addEventListener("deviceready", App.onDeviceReady, false);
 		}
-		else isApp = false;
+		else {
+			isApp = false;
+		}
+		this.bindUIActions(isApp);
 	},
 	
 	onDeviceReady: function() {
@@ -818,7 +820,7 @@ App = {
 		}
 	},
 	
-	bindUIActions: function() {
+	bindUIActions: function(isApp) {
 		//alert( isApp );
 		// Checks App or Browser
 		if(!isApp) {
