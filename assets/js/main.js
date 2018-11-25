@@ -59,10 +59,10 @@ App = {
 		globals = this.settings;
 		this.bindUIActions();
 		if(document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
+			isApp = true;
 			// PhoneGap application
 			// Attendre que PhoneGap soit prêt	    //
 			document.addEventListener("deviceready", App.onDeviceReady, false);
-			isApp = true;
 		}
 		else isApp = false;
 	},
@@ -101,15 +101,14 @@ App = {
 		// Efficient and batterie saving geolocation...
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
-		/*
 		BackgroundGeolocation.configure({
 			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
-			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY, // Or can be a number in meters
+			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
 			startForeground: true,
-			debug: false,
+			debug: true,
 			interval: 10000,
 			fastestInterval: 5000,
 			activitiesInterval: 10000,
@@ -118,9 +117,18 @@ App = {
 			stopOnTerminate : false,
 			notificationTitle: 'BoursoConvois',
 			notificationText: 'Suivi de votre position',
+			//url: globals.serverAddress,
+			//httpHeaders: {
+			//  'X-FOO': 'bar'
+			//},
+			// customize post properties
+			//postTemplate: {
+			//  lat: '@latitude',
+			//  lng: '@longitude',
+			//  foo: 'bar' // you can also add your own properties
+			//},
 			notificationIconColor: '#FEDD1E'
 		});
-		*/
 		BackgroundGeolocation.on('location', function(location) {
 			// handle your locations here
 			// to perform long running operation on iOS
@@ -193,31 +201,6 @@ App = {
 					});
 				}, 1000);
 			}
-		});
-		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
-			stationaryRadius: 1000,
-			distanceFilter: 1000,
-			activityType: 'AutomotiveNavigation',
-			startForeground: true,
-			debug: true,
-			interval: 60000,
-			fastestInterval: 30000,
-			activitiesInterval: 30000,
-			notificationTitle: 'BoursoConvois',
-			notificationText: 'Suivi de votre position',
-			//url: globals.serverAddress,
-			//httpHeaders: {
-			//  'X-FOO': 'bar'
-			//},
-			// customize post properties
-			//postTemplate: {
-			//  lat: '@latitude',
-			//  lng: '@longitude',
-			//  foo: 'bar' // you can also add your own properties
-			//},
-			notificationIconColor: '#FEDD1E'
 		});
 		/*
 		// Using Plugin V2.X
@@ -838,7 +821,10 @@ App = {
 	bindUIActions: function() {
 		//alert( isApp );
 		// Checks App or Browser
-		if(!isApp) App.getLocation();	
+		if(!isApp) {
+			alert("isApp: "+isApp);
+			App.getLocation();
+		}
 		// Is it Mobile device
 		if(/Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)) isMobile = true;
 		if(isMobile) {
