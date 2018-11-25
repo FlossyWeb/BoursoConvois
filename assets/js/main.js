@@ -105,9 +105,8 @@ App = {
 		// Efficient and batterie saving geolocation...
 		/* USING Plugin V3.X */
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
-		// ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 		BackgroundGeolocation.configure({
-			locationProvider: BackgroundGeolocation.RAW_PROVIDER, 
+			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 			desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
 			stationaryRadius: 10,
 			distanceFilter: 10,
@@ -116,6 +115,9 @@ App = {
 			interval: 10000,
 			fastestInterval: 5000,
 			activitiesInterval: 10000,
+			saveBatteryOnBackground : false,
+			stopOnStillActivity : false,
+			stopOnTerminate : false,
 			//url: globals.serverAddress,
 			//httpHeaders: {
 			//  'X-FOO': 'bar'
@@ -137,7 +139,6 @@ App = {
 			// you need to create background task
 			lat = location.latitude;
 			lng = location.longitude;
-			alert(lat+", "+lng)
 			BackgroundGeolocation.startTask(function(taskKey) {
 				// execute long running task
 				// eg. ajax post location
@@ -157,14 +158,14 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
-		/*
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
-			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
+			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER });
 		});
 		BackgroundGeolocation.on('foreground', function() {
 			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER });
 		});
+		/*
 		BackgroundGeolocation.on('stationary', function(stationaryLocation) {
 			// handle stationary locations here
 		});
@@ -187,28 +188,32 @@ App = {
 		BackgroundGeolocation.on('http_authorization', () => {
 			console.log('[INFO] App needs to authorize the http requests');
 		});
+		*/
 		BackgroundGeolocation.on('error', function(error) {
 			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
 			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
-				backgroundGeolocation.showAppSettings();
+				BackgroundGeolocation.showAppSettings();
 			});
 		});
-		*/
 		BackgroundGeolocation.on('authorization', function(status) {
 			if (status !== BackgroundGeolocation.AUTHORIZED) {
 				// we need to set delay or otherwise alert may not be shown
 				setTimeout(function() {
+					/*
 					var showSettings = confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?');
 					if (showSetting) {
 					  return BackgroundGeolocation.showAppSettings();
 					}
-					//navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
-					//	backgroundGeolocation.showAppSettings();
-					//});
+					*/
+					navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
+						BackgroundGeolocation.showAppSettings();
+					});
 				}, 1000);
 			}
 		});
+		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
+		BackgroundGeolocation.start();
 		/*
 		// Using Plugin V2.X
 		var geoCallbackFn = function(location) {
@@ -238,7 +243,7 @@ App = {
 		};
 		// BackgroundGeolocation is highly configurable. See platform specific configuration options 
 		backgroundGeolocation.configure(geoCallbackFn, geoFailureFn, {
-			locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+			locationProvider: backgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
 			desiredAccuracy: 100, // Or can be a number in meters
 			stationaryRadius: 1000,
 			distanceFilter: 1000,
@@ -252,9 +257,9 @@ App = {
 			notificationText: 'Suivi de votre position',
 			notificationIconColor: '#FEDD1E'
 		});
-		*/
 		// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 		backgroundGeolocation.start();
+		*/
 		/*
 		cordova.plugins.notification.local.clearAll(function() {
 		}, this);

@@ -209,6 +209,11 @@
     </platform>
 
 	<allow-navigation href="*" />
-	<access origin="*" />
-	
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+	<allow-intent href="geo:*" />	
 </widget>
