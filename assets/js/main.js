@@ -111,7 +111,7 @@ App = {
 			stationaryRadius: 10,
 			distanceFilter: 10,
 			activityType: 'Fitness',
-			debug: true,
+			debug: false,
 			interval: 10000,
 			fastestInterval: 5000,
 			activitiesInterval: 10000,
