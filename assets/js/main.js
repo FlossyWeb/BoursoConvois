@@ -220,7 +220,7 @@ App = {
 			backgroundGeolocation.finish();
 		};
 		var geoFailureFn = function(error) {
-			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', alertDismissed, 'Mon Appli Taxi', 'OK');
+			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'Mon Appli Taxi', 'OK');
 			//else alert('BackgroundGeolocation error');
 			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
 				backgroundGeolocation.showAppSettings();
@@ -497,7 +497,7 @@ App = {
 				App.getLocation(); // We got out of the loop so we get back in !
 				if(!geoFailedAlertOnce) {
 					geoFailedAlertOnce = true;
-					if(isApp) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
+					if(isApp) navigator.notification.alert(geoAlert, App.alertDismissed, 'BoursoConvois', 'OK');
 					else alert(geoAlert);
 				}
 			},{enableHighAccuracy:false, maximumAge:10000, timeout: 60000});
@@ -505,7 +505,7 @@ App = {
 		else {
 			App.getLocation(); // We got out of the loop so we get back in !
 			//$( "#errorPop" ).popup( "open", { positionTo: "window" } );
-			if(isApp) navigator.notification.alert(geoAlert, alertDismissed, 'BoursoConvois', 'OK');
+			if(isApp) navigator.notification.alert(geoAlert, App.alertDismissed, 'BoursoConvois', 'OK');
 			else alert(geoAlert);
 		}
 	},
