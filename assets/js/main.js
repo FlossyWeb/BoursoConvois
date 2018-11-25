@@ -59,14 +59,15 @@ App = {
 		globals = this.settings;
 		if(document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf("localhost") != 7) {
 			isApp = true;
+			App.bindUIActions();
 			// PhoneGap application
 			// Attendre que PhoneGap soit prêt	    //
 			document.addEventListener("deviceready", App.onDeviceReady, false);
 		}
 		else {
 			isApp = false;
+			App.bindUIActions();
 		}
-		this.bindUIActions(isApp);
 	},
 	
 	onDeviceReady: function() {
@@ -108,7 +109,7 @@ App = {
 			desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY, // Or can be a number in meters
 			stationaryRadius: 10,
 			distanceFilter: 10,
-			activityType: 'Fitness',
+			activityType: "Fitness",
 			debug: true,
 			interval: 10000,
 			fastestInterval: 5000,
@@ -820,7 +821,7 @@ App = {
 		}
 	},
 	
-	bindUIActions: function(isApp) {
+	bindUIActions: function() {
 		//alert( isApp );
 		// Checks App or Browser
 		if(!isApp) {
