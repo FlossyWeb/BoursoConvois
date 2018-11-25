@@ -137,6 +137,7 @@ App = {
 			// you need to create background task
 			lat = location.latitude;
 			lng = location.longitude;
+			alert(lat+", "+lng)
 			BackgroundGeolocation.startTask(function(taskKey) {
 				// execute long running task
 				// eg. ajax post location
@@ -156,6 +157,7 @@ App = {
 				BackgroundGeolocation.endTask(taskKey);
 			});
 		});
+		/*
 		BackgroundGeolocation.on('background', function() {
 			// you can also reconfigure service (changes will be applied immediately)
 			BackgroundGeolocation.configure({ locationProvider: BackgroundGeolocation.RAW_PROVIDER });
@@ -192,13 +194,18 @@ App = {
 				backgroundGeolocation.showAppSettings();
 			});
 		});
+		*/
 		BackgroundGeolocation.on('authorization', function(status) {
 			if (status !== BackgroundGeolocation.AUTHORIZED) {
 				// we need to set delay or otherwise alert may not be shown
 				setTimeout(function() {
-					navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
-						backgroundGeolocation.showAppSettings();
-					});
+					var showSettings = confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?');
+					if (showSetting) {
+					  return BackgroundGeolocation.showAppSettings();
+					}
+					//navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
+					//	backgroundGeolocation.showAppSettings();
+					//});
 				}, 1000);
 			}
 		});
