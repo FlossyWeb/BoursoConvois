@@ -235,7 +235,7 @@ App = {
 			backgroundGeolocation.finish();
 		};
 		var geoFailureFn = function(error) {
-			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'Mon Appli Taxi', 'OK');
+			//if(isApp) navigator.notification.alert('BackgroundGeolocation error', App.alertDismissed, 'BoursoConvois', 'OK');
 			//else alert('BackgroundGeolocation error');
 			navigator.notification.confirm('Erreur de Géolocalisation, voulez-vous aller dans les réglages afin d\'activer le service de géolocalisation pour cette app ?', 'BoursoConvois', function() {
 				backgroundGeolocation.showAppSettings();
@@ -263,10 +263,6 @@ App = {
 		/*
 		cordova.plugins.notification.local.clearAll(function() {
 		}, this);
-		var assosPop = window.open('http://taximedia.fr/assos/','_blank','location=false,enableViewportScale=yes,scrollbars=no,closebuttoncaption=Fermer');
-		setTimeout(function() {
-			assosPop.close();
-		}, 5000);
 		*/
 	},
 	alertDismissed: function() {
