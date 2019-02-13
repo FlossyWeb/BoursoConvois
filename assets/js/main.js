@@ -719,13 +719,17 @@ App = {
 				$('#fillJobDocument #arr_datetime_5').val(data.arr_datetime_5);
 				$('#fillJobDocument #dep_city_dep_1').val(data.dep_city_dep_1);
 				$('#fillJobDocument #arr_city_dep_1').val(data.arr_city_dep_1);
-				$('#fillJobDocument #dep_city_dep_2').val(data.dep_city_dep_2);
+				//$('#fillJobDocument #dep_city_dep_2').val(data.dep_city_dep_2);
+				$('#fillJobDocument #dep_city_dep_2').val(data.arr_city_dep_1);
 				$('#fillJobDocument #arr_city_dep_2').val(data.arr_city_dep_2);
-				$('#fillJobDocument #dep_city_dep_3').val(data.dep_city_dep_3);
+				//$('#fillJobDocument #dep_city_dep_3').val(data.dep_city_dep_3);
+				$('#fillJobDocument #dep_city_dep_3').val(data.arr_city_dep_2);
 				$('#fillJobDocument #arr_city_dep_3').val(data.arr_city_dep_3);
-				$('#fillJobDocument #dep_city_dep_4').val(data.dep_city_dep_4);
+				//$('#fillJobDocument #dep_city_dep_4').val(data.dep_city_dep_4);
+				$('#fillJobDocument #dep_city_dep_4').val(data.arr_city_dep_3);
 				$('#fillJobDocument #arr_city_dep_4').val(data.arr_city_dep_4);
-				$('#fillJobDocument #dep_city_dep_5').val(data.dep_city_dep_5);
+				//$('#fillJobDocument #dep_city_dep_5').val(data.dep_city_dep_5);
+				$('#fillJobDocument #dep_city_dep_5').val(data.arr_city_dep_4);
 				$('#fillJobDocument #arr_city_dep_5').val(data.arr_city_dep_5);
 				$('#fillJobDocument #km_day_1').val(data.km_day_1);
 				$('#fillJobDocument #km_day_2').val(data.km_day_2);
@@ -754,7 +758,7 @@ App = {
 					//window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
 				}
 				else {
-					window.open(data.pdf, '_blank', 'location=false,enableViewportScale=yes,closebuttoncaption=Fermer');
+					window.open(data.pdf, '_blank');
 				}
 			}
 			else {
